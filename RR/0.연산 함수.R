@@ -102,7 +102,6 @@ x <- c(1,4,3,2,6,5,4,8)
 sort(x) # 오름차순 정렬
 sort(x,decreasing = TRUE) # 내림차순 정렬
 order(x,decreasing=FALSE) # 값이 큰 것부터 있는 인덱스값
-?order
 
 x<- c(1:10)
 which(x==3) # 3이 위치하고 있는 2를 반환
@@ -111,16 +110,22 @@ which(x==3) # 3이 위치하고 있는 2를 반환
 1:10 
 c(1:10)
 
-# sequence 만들기 (등차수열)
-seq(from=1, to=10, by=0.5)
+#------------수열---------------#
+# sequence
+seq(from=1, to=10, by=0.5) # 1~10 , 등차는 0.5
+seq(from=1, to=10, length.out = 10) # 1~10, 갯수는 10개
+seq(        to=10, by=0.5,length.out = 10) # 시작점이 없어도, 조건에 적절히 맞추어 늘어난다.
 
-# 반복되는 vector 만들기
+# repeat
 rep(1:3, each=3) # 111222333 처럼 each 숫자가 3번 반복
 rep(1:3, times=2) # 123 123 으로 전체가 2번 반복
 
 
 sort(x,decreasing = TRUE) #정렬
 
+#------- 인덱싱 -----------#
+x<-c(1:5) 
+y<-c(5:1)
 #x[i] : 벡터의 i번째 값을 보여준다.
 x[2]
 
@@ -135,6 +140,14 @@ x[2:4]
 
 #apppend(x,y) : x와y 를 연결한다.
 append(x,y)
+
+#-------- 인덱싱 2 -------------#
+x = c(1,2,3,4)
+names(x) = c('a','b','c','d') # 이렇게 인덱싱을 달게되면
+x[c(2,4)] # 위치로 인덱싱
+x[c(-1,-3)] # - 값은 제외하여 인덱싱
+x[c(TRUE,TRUE,FALSE,TRUE)] # T,F 로 인덱싱
+x[c('a','c')] # names 했던 문자로 인덱싱
 
 #x + 1, x * 3 , x / 3 ... : 연산이 모두 elemetwise 하게 된다
 x+10
@@ -174,7 +187,6 @@ match(x,c('korea','india'))
 # grep('A',x) A로 시작하는 문자열을 찾아서 INDEX 를 도출 
 grep('ja' , x)  # ja 로 시작하는 japan 은 1,3 번쨰
 grep('(pa)', x) # 문자열에 pa 를 보함하는 문자는 1,3 번째
-
 
 
 #-------------논리형 벡터 연산-------------#
