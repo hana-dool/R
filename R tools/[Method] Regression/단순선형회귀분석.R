@@ -13,11 +13,14 @@ cor(Girth, Volume)
 # X 와 Y 의 변수가 1개씩인 단순선형회귀분석에서는 cor 가 상관계수가 된다.
 # 여기세어는 0.96 이므로 1에 매우 가깝다. 즉 매우 큰 선형관계가 있다는 것을 알 수 있다.
 
-fit <- lm(Volume~Girth)
+fit <- lm(Volume~Girth, data = trees)
 # lm = linear model (선형모형)
 # lm(Y~X) (X 설명변수, Y 반응변수 로 설정한다.)
+# data 는, Volume, Girth 를 col 로 가지고 있는 dataframe 을 받는다.
 
-summary(fit) ## 회귀계수의 t검정, 잔차분산의 추정값, 결정계수 R^2
+summary(fit)
+# 회귀계수의 t검정, 잔차분산의 추정값, 결정계수 R^2 를 알려준다.
+#-----------------------------------#
 #Call:
 #lm(formula = Volume ~ Girth)
 
@@ -26,31 +29,41 @@ summary(fit) ## 회귀계수의 t검정, 잔차분산의 추정값, 결정계수 R^2
 #-8.065 -3.107  0.152  3.495  9.587 
 
 #Coefficient 
-#Estimate : 회귀분석을 통하여 나온 추정값 intercept 는 절편, Girth(X변수)는 기울기. 1이오를때마다 Volume(Y변수) 가 얼마나 증가하는값
-#Std.Error : 회귀분석의 가정사항들을 모두 만족한다면,(추세식의 b0=절편, b1=기울기에 대해서 b0 ~ N(β0, var(b0)), b1 ~ N(β1, var(b1))
-#가 성립한다. 각각의 표준편차를 std.error 라고 한다. sb1,sb2
-#t-value : 각각 귀무가설을 b0=0 , b1= 0 으로 두고 이에대한 검정을 한 t value (귀무가설: b1=0, 대립가설 b1=not 0 검정)
-#Pr(>|t|): 그에따른 p-value 이다. 이 값이 작을수록 b1= not 0 이라는 소리. 
-#이 자료에서는 Girth 가 X변수로 설정되었으므로 아래 Girth 의 Pr(>|t|) 값이 작다는것은 기울기가 0이 아니라는 주장이 신빈성이 있다는뜻
-#즉 Girth 와 Volume 은 연관성이 크다는것을 확인 가능하다.
+#Estimate  : 회귀분석을 통하여 나온 추정값 intercept 는 절편, Girth(X변수)는 기울기. 1이오를때마다 Volume(Y변수) 가 얼마나 증가하는값
+#Std.Error : 회귀분석의 가정사항들을 모두 만족한다면,(추세식의 b0=절편, b1=기울기에 대해서 b0 ~ N(β0, var(b0)), b1 ~ N(β1, var(b1)) 가 성립한다.
+#          : 각각의 표준편차를 std.error 라고 한다. sb1,sb2
+#t-value   : 각각 귀무가설을 b0=0 , b1= 0 으로 두고 이에대한 검정을 한 t value (귀무가설: b1=0, 대립가설 b1=not 0 검정)
+#Pr(>|t|)  : 그에따른 p-value 이다. 
+#          : 이 값이 작을수록 b1= not 0 이라는 소리. 
+#          : 이 자료에서는 Girth 가 X변수로 설정되었으므로 아래 Girth 의 Pr(>|t|) 값이 작다는것은 기울기가 0이 아니라는 주장이 신빈성이 있다는뜻
+#          : 즉 Girth 와 Volume 은 연관성이 크다는것을 확인 가능하다.
 #              Estimate     Std. Error  t value   Pr(>|t|)    
-#(Intercept)   -36.9435     3.3651     -10.987   7.62e-12 ***  #inte
-#  Girth         5.0659     0.2474      20.48    < 2e-16 ***   #
+#(Intercept)   -36.9435     3.3651     -10.987   7.62e-12 ***   
+#  Girth         5.0659     0.2474      20.48    < 2e-16  ***   
 #  ---
 #  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-#Residual standard error: 4.252 on 29 degrees of freedom    #잔차의 표준오차
-#Multiple R-squared:  0.9353,	Adjusted R-squared:  0.9331   #R-SQURE값 multiple 은 ssr/sst 이며 adjusted 는 수정된값.
-#F-statistic: 419.4 on 1 and 29 DF,  p-value: < 2.2e-16   #F 검정값 단순선형회귀일 경우 F값과 t 의 검정이 일치해서 의미는 없다.
+#Residual standard error: 4.252 on 29 degrees of freedom  : 잔차의 표준오차
+#Multiple R-squared:  0.9353,	Adjusted R-squared:  0.9331 : R-값과 adjusted R 값
+#F-statistic: 419.4 on 1 and 29 DF,  p-value: < 2.2e-16   : F 검정값 모델 자체의 유의성을 검정한다. 작을수록 유의함. 
+#----------------------------------------#
+
+str(summary(fit))
+# str 을 치면 객체의 속성,attributes 들을 모두 알려준다. 
+# 즉 내가 어떤것을 뽑아낼 수 있는지 알려준다.
+
+fit$coefficients
+# fitting 한 결과의 coefficient 값을 보여준다.
 
 abline(fit$coefficient[1],fit$coefficient[2]) 
 # 그려진 plot 위에 추정된 회귀식을 그려넣는다. 
 
-## 우리가 추정하는 절편과 기울기에 대한 95% 신뢰구간
-confint(fit)
 
-## 회귀식의 유의성 검정 - 분산분석표
+confint(fit)
+## 우리가 추정하는 절편과 기울기에 대한 95% 신뢰구간
+
 anova(fit)
+## 회귀식의 유의성 검정 - 분산분석표
 #          Df Sum Sq      Mean Sq     F value             Pr(>F)    
 #Girth      1 7581.8=ssr  7581.8=msr  419.36=msr/mse      < 2.2e-16 *** 
 #Residuals 29  524.3=sse  18.1=mse  
@@ -80,9 +93,10 @@ help("predict.lm") # predict 가 궁금하다면 이걸 치자.
 
 
 ## 잔차에 의한 진단(diagnostics)
-## 잔차도
+# 잔차도
 plot(Girth, fit$residuals, ylab="잔차")  #이 때에 x 변수는 x값이다.
 abline(0,0)
 
 ## 잔차의 정규성 진단 - 줄기잎전시
 stem(fit$residuals)
+
