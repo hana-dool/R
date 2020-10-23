@@ -32,9 +32,6 @@ dev.off()
 # 내장 data import 하기
 data(trees)
 
-# 데이터 프레임의 값 붙여주기(계속 사용하기위해)
-attach(trees)
-
 # 데이터 프레임 선택
 trees[trees$Height>3,]
 
@@ -51,3 +48,27 @@ data('mtcars')
 mtcars
 mtcars$carname = 2
 mtcars # 위와같이 지정하면 그냥 추가된다.
+
+# [attach] 데이터 프레임의 값 붙여주기(계속 사용하기위해)
+attach(trees)
+mean(Height)
+
+# [detach] 데이터 프레임을 떼놓을 때에 사용한다
+detach(trees)
+mean(Height)
+
+# [with] (attach 의 간소화 버젼)
+library(MASS)
+data(Cars93)
+# 데이터 프레임 이름을 지정하지 않으면 R은 어디에서 변수를 가져와야 할지 알지 못함. 에러 발생
+mean(mpg)
+# '데이터 프레임 이름$변수명' 형식으로 '$'를 이용해 객체 지정해주어야 R이 이해를 함
+mean(mtcars$mpg)
+tf_0_1 <- (max(mtcars$mpg) - mtcars$mpg) / (max(mtcars$mpg) - min(mtcars$mpg))
+tf_0_1
+# 위의 '$'는 R 명령어를 입력할 때마다 매번 '데이터 프레임 이름$변수명' 처럼 데이터 프레임 이름을 입력해주어야 하므로,
+# 입력해야할 R 명령문이 많아지만 꽤 번거로운 방법
+# 이런 번거로움을 해결해주는 방법이 바로 WITH 이다.
+tf_0_1_2 <- with(mtcars, (max(mpg) - mpg) / (max(mpg) - min(mpg)) )
+tf_0_1_2
+# 그러나 이 방법은 계속 with 을 붙여줘야해서 넘모 번거롭다.
