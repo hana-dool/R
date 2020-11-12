@@ -1,0 +1,26 @@
+material,operator,Treatments,assemblies,burning rate
+1,1,A,alpha,24
+1,2,B,gamma,20
+1,3,C,epsilon,19
+1,4,D,beta,24
+1,5,E,delta,24
+2,1,B,beta,17
+2,2,C,delta,24
+2,3,D,alpha,30
+2,4,E,gamma,27
+2,5,A,epsilon,36
+3,1,C,gamma,18
+3,2,D,epsilon,38
+3,3,E,beta,26
+3,4,A,delta,27
+3,5,B,alpha,21
+4,1,D,delta,26
+4,2,E,alpha,31
+4,3,A,gamma,26
+4,4,B,epsilon,23
+4,5,C,beta,22
+5,1,E,epsilon,22
+5,2,A,beta,30
+5,3,B,delta,20
+5,4,C,alpha,29
+5,5,D,gamma,31
