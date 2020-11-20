@@ -1,3 +1,4 @@
+setwd('C:/Users/goran/Desktop/Git_Hub/R/R tools/[Method] Anova')
 
 ch4 = read.csv('ch4.csv', header=TRUE)
 head(ch4)

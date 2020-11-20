@@ -8,6 +8,7 @@ rm(x)
 
 # cat('텍스트') : 괄호 안의 내용을 화면에 출력한다.
 cat('PYTHON 이 최고야')
+n= 2 ; m=3 ; cat('n :',n,'m :', m) # print 은 다양한 값을 출력해준다.
 
 # setwd('경로') : 작업한 내용을 저장하는 디렉토리를 지정한다.
 setwd('C:/Users/Han/Desktop')
@@ -72,3 +73,8 @@ tf_0_1
 tf_0_1_2 <- with(mtcars, (max(mpg) - mpg) / (max(mpg) - min(mpg)) )
 tf_0_1_2
 # 그러나 이 방법은 계속 with 을 붙여줘야해서 넘모 번거롭다.
+
+# [print]
+# 이렇게 하면 모든 자릿수를 표기할 수 있다
+print(13^12, digits=15)
+
