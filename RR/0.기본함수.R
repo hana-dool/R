@@ -13,9 +13,11 @@ n= 2 ; m=3 ; cat('n :',n,'m :', m) # print 은 다양한 값을 출력해준다.
 # setwd('경로') : 작업한 내용을 저장하는 디렉토리를 지정한다.
 setwd('C:/Users/Han/Desktop')
 
-
 # getwd() 현재 설정된 작업한 파일 위치를 보여준다ㅏ.
 getwd()
+
+################ 현재 위치를, 기본 directory 로 지정
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 # read.csv('.../데이터.csv') : 경로에서 csv 파일을 읽어옵니다.
 data<-read.csv('C:/Users/Han/Desktop/data_finance.csv')
