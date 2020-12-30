@@ -12,7 +12,7 @@ english <- c(98,97,86,98,80,89)
 science <- c(50,60,78,58,65,98)
 data <- data.frame(id,class,english,science) ; data
 
-# select : 데이터 프레임에서 내가 원하는 column 만 선택하겠다. 
+#-- select : 데이터 프레임에서 내가 원하는 column 만 선택하겠다. 
 data %>% # 데이터가 slect 의 입력으로 들어감
   select(class,english) # class, english 만 표출해라
 
