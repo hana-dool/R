@@ -1,5 +1,5 @@
 ---
-output: html_document
+output: rmarkdown::github_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -18,122 +18,122 @@ english <- c(98,97,86,98,80,89)
 science <- c(50,60,78,58,65,98)
 data <- data.frame(id,class,english,science) ; data
 ```
-# 1.ê¸°ì´ˆì§€ì‹
-### íŒŒì´í”„ ì—°ì‚°ì [%>%]
-í•¨ìˆ˜ì˜ ì¶œë ¥ì´ ê·¸ ë‹¤ìŒê°’ìœ¼ë¡œ ë°”ë¡œ ë“¤ì–´ê°€ëŠ”ê²ƒ  
-%>% í•¨ìˆ˜1 %>% í•¨ìˆ˜2(í•¨ìˆ˜1ì˜ ê°’ì„ ì´ìš©) %>%.....  
+# 1.ê¸°ì´ˆì§€?‹
+### ?ŒŒ?´?”„ ?—°?‚°? [%>%]
+?•¨?ˆ˜?˜ ì¶œë ¥?´ ê·? ?‹¤?Œê°’ìœ¼ë¡? ë°”ë¡œ ?“¤?–´ê°€?Š”ê²?  
+%>% ?•¨?ˆ˜1 %>% ?•¨?ˆ˜2(?•¨?ˆ˜1?˜ ê°’ì„ ?´?š©) %>%.....  
 
-function (dataframe,arg1,arg2) ì´ë¼ëŠ” í•¨ìˆ˜ì™€ ì•„ë˜ %>% ì—´ë¡œ í•©ì³ì§„ êµ¬ë¬¸ì€ ê°™ì€ í‘œí˜„ì´ë‹¤.
+function (dataframe,arg1,arg2) ?´?¼?Š” ?•¨?ˆ˜??€ ?•„?˜ %>% ?—´ë¡? ?•©ì³ì§„ êµ¬ë¬¸??€ ê°™ì?€ ?‘œ?˜„?´?‹¤.
 dataframe %>%  
 function(arg1,ar2)  
 
-# 2. Selct ì™€ Filter
+# 2. Selct ??€ Filter
 
 ## Select 
-ë°ì´í„° í”„ë ˆì„ì—ì„œ ë‚´ê°€ ì›í•˜ëŠ” column ë§Œ ì„ íƒí•˜ê²Œ í•˜ëŠ” êµ¬ë¬¸. 
+?°?´?„° ?”„? ˆ?„?—?„œ ?‚´ê°€ ?›?•˜?Š” column ë§? ?„ ?ƒ?•˜ê²? ?•˜?Š” êµ¬ë¬¸. 
 ```{r}
-data %>% # ë°ì´í„°ê°€ slect ì˜ ì…ë ¥ìœ¼ë¡œ ë“¤ì–´ê°
-  select(class,english) # class, english ë§Œ í‘œì¶œí•´ë¼
+data %>% # ?°?´?„°ê°€ slect ?˜ ?…? ¥?œ¼ë¡? ?“¤?–´ê°?
+  select(class,english) # class, english ë§? ?‘œì¶œí•´?¼
 ```
 
 ## Filter
-íŠ¹ì • row ë§Œ ë½‘ê³ ì‹¶ì„ë•Œ
+?Š¹? • row ë§? ë½‘ê³ ?‹¶?„?•Œ
 ```{r}
 data %>%
-  filter(class==1) # class ê°€ 1ë°˜ì¸ observation ë§Œ ë³´ê³  ì‹¶ë‹¤ëŠ” ëœ».
+  filter(class==1) # class ê°€ 1ë°˜ì¸ observation ë§? ë³´ê³  ?‹¶?‹¤?Š” ?œ».
 ```
-<= > != ë“± ë§ì€ operator ê°€ ê°€ëŠ¥í•˜ë‹¤.   
-is.na (missing value ê°€ ìˆëŠëƒ ì—†ëŠëƒ)   
-logical operator ë¥¼ ë‹¤ì–‘í•˜ê²Œ ì‚¬ìš©í•´ì„œ filter ê³¼ ê°™ì´ ì‚¬ìš©í•  ìˆ˜ ìˆë‹¤.   
+<= > != ?“± ë§ì?€ operator ê°€ ê°€?Š¥?•˜?‹¤.   
+is.na (missing value ê°€ ?ˆ?Š?ƒ ?—†?Š?ƒ)   
+logical operator ë¥? ?‹¤?–‘?•˜ê²? ?‚¬?š©?•´?„œ filter ê³? ê°™ì´ ?‚¬?š©?•  ?ˆ˜ ?ˆ?‹¤.   
 
 
 # EX
-ë‹¤ì´ì•„ëª¬ë“œ ê°€ê²©ì´ 950 ì´í•˜ì´ê³ , 800ì´ìƒì¸ ê²ƒë§Œ ê³ ë¥¼ ë•Œ
+?‹¤?´?•„ëª¬ë“œ ê°€ê²©ì´ 950 ?´?•˜?´ê³?, 800?´?ƒ?¸ ê²ƒë§Œ ê³ ë?? ?•Œ
 ```{r}
 diamonds %>%
   filter(price <= 950 & price >= 800)
 ```
 
 ```{r}
-# cë¡œ ì‹œì‘í•˜ëŠ” ë³€ìˆ˜ë“¤ë§Œ ì„ íƒ
+# cë¡? ?‹œ?‘?•˜?Š” ë³€?ˆ˜?“¤ë§? ?„ ?ƒ
 diamonds %>%
   select(starts_with("c"))
 
-# ë³€ìˆ˜ì˜ ëë‚˜ëŠ” ìŠ¤í ë§
+# ë³€?ˆ˜?˜ ??‚˜?Š” ?Š¤? ë§?
 diamonds %>%
   select(ends_with("e"))
 
-# ë³€ìˆ˜ì— í¬í•¨ëœ ìŠ¤í ë§ 
+# ë³€?ˆ˜?— ?¬?•¨?œ ?Š¤? ë§? 
 diamonds %>%
   select(contains("r"))
 
-# íŠ¹ì • ìœ„ì¹˜ì˜ ì„ íƒ
+# ?Š¹? • ?œ„ì¹˜ì˜ ?„ ?ƒ
 diamonds %>%
   select(1:4)
 
 data %>%
-  select(english,science) %>% # ë°ì´í„°ì—ì„œ ì˜ì–´ì™€ ê³¼í•™ col ë§Œ ì„ íƒí•˜ê³ 
-  filter(science >= 70) %>% # ê·¸ë‹¤ìŒ ê³¼í•™ ì ìˆ˜ëŠ” 70ì  ì´ìƒì¸ê±°ë§Œ ê³ ë¥´ê³ 
-  head(2) # ê·¸ë‹¤ìŒ 2ê°œì˜ row ë§Œ ì¶œë ¥
+  select(english,science) %>% # ?°?´?„°?—?„œ ?˜?–´??€ ê³¼í•™ col ë§? ?„ ?ƒ?•˜ê³?
+  filter(science >= 70) %>% # ê·¸ë‹¤?Œ ê³¼í•™ ? ?ˆ˜?Š” 70?  ?´?ƒ?¸ê±°ë§Œ ê³ ë¥´ê³?
+  head(2) # ê·¸ë‹¤?Œ 2ê°œì˜ row ë§? ì¶œë ¥
 ```
 
 # Arrange
 ```{r}
 data %>%
-  arrange(id) # ì˜¤ë¦„ì°¨ìˆœ ì •ë ¬
+  arrange(id) # ?˜¤ë¦„ì°¨?ˆœ ? •? ¬
 
 data %>%
-  arrange(desc(id)) # ë‚´ë¦¼ì°¨ìˆœ ì •ë ¬
+  arrange(desc(id)) # ?‚´ë¦¼ì°¨?ˆœ ? •? ¬
 
 data %>%
-  arrange(id, desc(science)) # id ëŠ” ì˜¤ë¦„ì°¨ìˆœ ê·¸ë¦¬ê³  science ëŠ” ë‚´ë¦¼ì°¨ìˆœ ì •ë ¬
-# id ê°€ ë¨¼ì € ìˆœìœ„ê°€ ëœë‹¤. 
+  arrange(id, desc(science)) # id ?Š” ?˜¤ë¦„ì°¨?ˆœ ê·¸ë¦¬ê³? science ?Š” ?‚´ë¦¼ì°¨?ˆœ ? •? ¬
+# id ê°€ ë¨¼ì?€ ?ˆœ?œ„ê°€ ?œ?‹¤. 
 
 data %>%
-  mutate(total = english+science) # ìƒˆë¡œìš´ total ì´ë¼ëŠ” column ë³€ìˆ˜ê°€ ë“¤ì–´ê°€ê²Œ ëœë‹¤.
+  mutate(total = english+science) # ?ƒˆë¡œìš´ total ?´?¼?Š” column ë³€?ˆ˜ê°€ ?“¤?–´ê°€ê²? ?œ?‹¤.
 
 data%>%
   mutate(total = english+science) %>%
   mutate(mean = total/2) %>%
-  mutate(test = ifelse(mean>=60,'pass','fail')) # ì´ë ‡ê²Œ ifelse ë¥¼ ì“¸ ìˆ˜ ìˆìŒ
+  mutate(test = ifelse(mean>=60,'pass','fail')) # ?´? ‡ê²? ifelse ë¥? ?“¸ ?ˆ˜ ?ˆ?Œ
 ```
 
 # Summarize
 ```{R}
 storm = data.frame(storms)
-storm %>% # ì´ë ‡ê²Œ ì•„ë˜ì²˜ëŸ¼ summarise ê°€ëŠ¥
-  summarise(n_obs = n(), # ì´ ëª‡ê°œì¸ì§€ ì•Œê³ ì‹¶ë‹¤ë©´ n()
+storm %>% # ?´? ‡ê²? ?•„?˜ì²˜ëŸ¼ summarise ê°€?Š¥
+  summarise(n_obs = n(), # ì´? ëª‡ê°œ?¸ì§€ ?•Œê³ ì‹¶?‹¤ë©? n()
             max_wind = max(wind),
-            min_wind = min(wind)) # ì œì¼ ì•½í•œ ë°”ëŒ
+            min_wind = min(wind)) # ? œ?¼ ?•½?•œ ë°”ëŒ
 ```
 
 
 # grouping 
 ```{R}
 storm %>%
-  group_by(name,year)  # name ê³¼ yearë¡œ ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ 
+  group_by(name,year)  # name ê³? yearë¡? ?˜¤ë¦„ì°¨?ˆœ?œ¼ë¡? 
 
 # --------- grouping + summarizing
 storm %>%
-  group_by(name,year) %>% # ì´ë¦„ê³¼, ë…„ë„ì— ëŒ€í•´ grouping
-  summarise(n_obs = n(), # ê° group ì—ì„œ ê°¯ìˆ˜ê°€ ëª‡ê°œ?
-            max_wind = max(wind), # max wind ëŠ” ì–¼ë§ˆ?
+  group_by(name,year) %>% # ?´ë¦„ê³¼, ?…„?„?— ??€?•´ grouping
+  summarise(n_obs = n(), # ê°? group ?—?„œ ê°??ˆ˜ê°€ ëª‡ê°œ?
+            max_wind = max(wind), # max wind ?Š” ?–¼ë§??
             min_wind = min(wind)) 
 ```
 
 ```{R}
-# ------------ Use ì‚¬ìš©ì ì •ì˜ í•¨ìˆ˜
+# ------------ Use ?‚¬?š©? ? •?˜ ?•¨?ˆ˜
 knot <- function(knot){
   mph <- 1.152 * knot
 }
-# ìœ„ì™€ ê°™ì´ í•¨ìˆ˜ë¥¼ ë§Œë“ ë‹¤.
+# ?œ„??€ ê°™ì´ ?•¨?ˆ˜ë¥? ë§Œë“ ?‹¤.
 
 storm %>%
   summarise(n_obs = n(),
-            max_wind = knot(max(wind))) # ë‹¤ìŒê³¼ ê°™ì´ ë¯¸ë¦¬ ì •ì˜í•œ í•¨ìˆ˜ ì´ìš© ê°€ëŠ¥
+            max_wind = knot(max(wind))) # ?‹¤?Œê³? ê°™ì´ ë¯¸ë¦¬ ? •?˜?•œ ?•¨?ˆ˜ ?´?š© ê°€?Š¥
 ```
 
-# ë°ì´í„° ë³€ìˆ˜ ì´ë¦„ ë³€í™˜
+# ?°?´?„° ë³€?ˆ˜ ?´ë¦? ë³€?™˜
 ```{R}
 diamonds <- diamonds %>%
   rename(width  = x,
@@ -142,9 +142,9 @@ diamonds <- diamonds %>%
 colnames(diamonds)
 ```
 
-# sampling í•¨ìˆ˜
+# sampling ?•¨?ˆ˜
 ```{R}
-# ì „ì²´ ê´€ì¸¡ì¹˜ ì¤‘ì—ì„œ 100ê°œë§Œ ë¹„ë³µì› ì¶”ì¶œ
+# ? „ì²? ê´€ì¸¡ì¹˜ ì¤‘ì—?„œ 100ê°œë§Œ ë¹„ë³µ?› ì¶”ì¶œ
 diamonds %>%
   sample_n(100)
 
@@ -153,7 +153,7 @@ diamonds %>%
   sample_n(100,
            replace = T)
 
-# ì „ì²´ ë°ì´í„°ì¤‘ì— 30% ë¹„ë³µì› ì¶”ì¶œ
+# ? „ì²? ?°?´?„°ì¤‘ì— 30% ë¹„ë³µ?› ì¶”ì¶œ
 diamonds %>%
   sample_frac(.3)
 
@@ -161,19 +161,19 @@ diamonds %>%
 
 # Advanced working
 ```{R}
-# group by ë¡œ ë‘ê°œ ë³€ìˆ˜ì˜ combination ì— ëŒ€í•´ì„œ ê° value ë“¤ì˜ count
+# group by ë¡? ?‘ê°? ë³€?ˆ˜?˜ combination ?— ??€?•´?„œ ê°? value ?“¤?˜ count
 diamonds %>% 
   group_by(cut,color) %>%
   summarise(count = n())
-# ì´ë ‡ê²Œ í•´ë„ ìœ„ì™€ ê°™ë‹¤.
+# ?´? ‡ê²? ?•´?„ ?œ„??€ ê°™ë‹¤.
 diamonds %>%
   count(cut,color) 
 
-# group by ë¡œ ë‘ê°œ ë³€ìˆ˜ì˜ combinationì— ëŒ€í•´ì„œ, unique í•œ clarity ì˜ count
+# group by ë¡? ?‘ê°? ë³€?ˆ˜?˜ combination?— ??€?•´?„œ, unique ?•œ clarity ?˜ count
 diamonds %>% 
   group_by(cut ,color) %>%
   summarise(count = n_distinct(clarity))
-# ì¦‰ fair cut, D color ì¸ ê²½ìš°ì—, clarity ì˜ ì¢…ë¥˜ëŠ” 8ê°œ
+# ì¦? fair cut, D color ?¸ ê²½ìš°?—, clarity ?˜ ì¢…ë¥˜?Š” 8ê°?
 ```
 
 
