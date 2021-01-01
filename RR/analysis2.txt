@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = Volume ~ Height, data = trees)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-21.274  -9.894  -2.894  12.068  29.852 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -87.1236    29.2731  -2.976 0.005835 ** 
+Height        1.5433     0.3839   4.021 0.000378 ***
+---
+Signif. codes:  0 ¡®***¡¯ 0.001 ¡®**¡¯ 0.01 ¡®*¡¯ 0.05 ¡®.¡¯ 0.1 ¡® ¡¯ 1
+
+Residual standard error: 13.4 on 29 degrees of freedom
+Multiple R-squared:  0.3579,	Adjusted R-squared:  0.3358 
+F-statistic: 16.16 on 1 and 29 DF,  p-value: 0.0003784
+

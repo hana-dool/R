@@ -14,8 +14,12 @@ sum(Cars93$Luggage.room) # 곁측값이 있으면 분석이 안된다.
 sum(Cars93$Luggage.room, na.rm=TRUE) # 곁측값 있어도 통계분석 가능
 
 #na.omit() : 곁측값이 들어있는 행을 분석에서 제외
-Cars93_new<-na.omit(Cars93)
+Cars93_new <-na.omit(Cars93)
 sum(is.na(Cars93_new)) # 곁측값이 없어진것을 볼 수 있다.
+# 아래 작업을 통해서 곁측치 제거 후 row 들의 index 를 초기화 할 수 있
+
+row.names(Cars93_new) <- NULL
+tail(Cars93_new)
 
 #complete.cases() : 특정행과 열에 결측값이 들어있는 행을 데이터셋에서 제거
 new<-Cars93[complete.cases
@@ -28,6 +32,6 @@ mean<-mean(Cars93$Luggage.room, na.rm=TRUE) # 곁측값 미포함한 col 의 mean
 Cars93$Luggage.room[is.na(Cars93$Luggage.room)] <- mean #mean 으로 대체
 
 #sapply(data, functio(x){ifelse}(is.na(x), 대체하고픈값, x )) # 모든 col 에 대해 새로운 값으로 col 곁측치 대체 
-sapply(Cars93, function(x) {ifelse(is.na(x), mean(x, na.rm=TRUE), x)}) #sapply 라 각 col 의 mean 으로 대체된다.
+sapply(Cars93, function(x) {ifelse(is.na(x), mean(x, na.rm=TRUE), x)}) #sapply라 각 col 의 mean 으로 대체된다.
 
 

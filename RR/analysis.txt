@@ -1,0 +1,2 @@
+data summary is 
+ Min.   : 8.30   1st Qu.:11.05   Median :12.90   Mean   :13.25   3rd Qu.:15.25   Max.   :20.60   Min.   :63   1st Qu.:72   Median :76   Mean   :76   3rd Qu.:80   Max.   :87   Min.   :10.20   1st Qu.:19.40   Median :24.20   Mean   :30.17   3rd Qu.:37.30   Max.   :77.00  

@@ -1,0 +1,86 @@
+---
+title: "데이터 살펴보기"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+데이터를 전처리 하기 전에 어떤 형태인지 알아봐야 할 것이다.<br>
+그럴때는 아래와 같이 데이터를 살펴보기 위한 명령어들이다.
+
+## head
+데이터의 앞부분을 보여준다.<br>
+**n** : default 는 5이지만, 수를 지정해서 원하는만큼의 데이터를 볼 수 있다.
+```{r}
+head(iris,n=7)
+```
+## tail
+데이터의 뒷부분을 보여준다.<br>
+**n** : default 는 5이지만, 수를 지정해서 원하는만큼의 데이터를 볼 수 있다.
+```{r}
+tail(iris,n = 10)
+```
+## View
+데이터 내용을 새 윈도우를 열어서 보여준다.<br>
+오름차순으로 정렬하거나 다양한 조작 가능<br>
+```{r}
+View(iris)
+```
+
+## dim 
+데이터의 차원을 보여준다.
+```{r}
+dim(iris)
+```
+
+## length
+length(df) : 데이터프레임에 사용시 column 의 갯수 출력 <br>
+length(df$col) : column 에 사용시 col 의 element 의 갯수 출력<br>
+```{r}
+length(iris) 
+length(iris$Sepal.Length) 
+```
+
+## names
+데이터의 구성요소 이름 (col 의 이름)을 출력한다.
+```{r}
+names(iris)
+```
+
+## summary 
+데이터의 기초 통계량을 보여준다.
+```{r}
+summary(iris)
+```
+
+## class
+데이터의 속성을 나타낸다.
+```{r}
+class(iris) # iris 의 속성은 data.frame
+class(c(1,2,3)) # 벡터는 한 속성의 element로 구성된다. 즉 vector 의 구성인 numeric 표출
+class(c(1,2,'a')) # 벡터는 한 속성의 element 가 되야되서 character 표출
+```
+
+## str
+데이터의 내부 구조를 보여준다.
+```{r}
+str(iris) # 범주형의 경우 어떤 level 로 구성되어있고, 각 data type 이 뭔지
+```
+
+## attach : 데이터를 고정해서 사용한다.
+```{r}
+attach(iris)
+Sepal.Length # 원래 iris$Sepal.Length 로 해야하지만, attcach 로 해서 바로나온다.
+```
+
+## detach : 데이터 고정을 해재한다.
+```{r}
+detach(iris)
+# Sepal.Length # 이렇게 실행하면 오류가 난다.
+iris$Sepal.Length 
+```
+
+## with : 데이터를 활성화한다. attach 와 비슷
+```{r}
+with(iris,max(Sepal.Length))
+```

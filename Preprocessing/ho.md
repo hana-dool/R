@@ -1,4 +1,4 @@
-dplyr 기초 전처리
+Untitled
 ================
 
 ``` r
@@ -359,16 +359,16 @@ diamonds %>%
     ## # A tibble: 100 x 10
     ##    carat cut       color clarity depth table price width length heigth
     ##    <dbl> <ord>     <ord> <ord>   <dbl> <dbl> <int> <dbl>  <dbl>  <dbl>
-    ##  1  1.28 Ideal     F     SI2      62.3    55  6458  6.96   6.91   4.32
-    ##  2  1.5  Ideal     D     VS2      62.6    56 15848  7.21   7.27   4.53
-    ##  3  1    Good      D     SI2      64.3    53  3965  6.34   6.29   4.06
-    ##  4  1.01 Very Good G     SI1      63.5    60  4271  6.41   6.38   3.92
-    ##  5  1.06 Very Good E     IF       62.7    58 11518  6.48   6.54   4.08
-    ##  6  0.38 Ideal     E     SI2      61.8    56   628  4.62   4.66   2.87
-    ##  7  0.7  Good      D     VS2      63.9    58  3087  5.58   5.62   3.58
-    ##  8  0.3  Very Good D     SI1      63.4    55   662  4.26   4.22   2.69
-    ##  9  0.23 Ideal     F     VVS2     62.5    55   511  3.94   3.96   2.47
-    ## 10  0.6  Premium   D     SI1      61.6    58  1896  5.42   5.45   3.35
+    ##  1  0.7  Good      E     VVS2     60.1    63  2857  5.68   5.71   3.42
+    ##  2  1.2  Very Good E     VS1      59.4    56  9904  6.94   7      4.14
+    ##  3  0.26 Very Good E     VS2      60.4    58   452  4.15   4.19   2.52
+    ##  4  0.41 Ideal     G     SI1      61.6    57  1110  4.77   4.81   2.95
+    ##  5  0.31 Premium   I     VVS1     61      58   732  4.39   4.33   2.66
+    ##  6  0.3  Ideal     G     VS2      60.8    57   491  4.33   4.38   2.65
+    ##  7  1.01 Fair      D     SI2      64.6    62  4538  6.26   6.21   4.03
+    ##  8  0.53 Premium   J     VS2      60.9    59  1122  5.27   5.2    3.19
+    ##  9  2.14 Premium   G     SI2      60.1    58 12792  8.4    8.35   5.03
+    ## 10  1.54 Premium   G     SI2      62.4    57  8969  7.39   7.36   4.6 
     ## # ... with 90 more rows
 
 ``` r
@@ -381,16 +381,16 @@ diamonds %>%
     ## # A tibble: 100 x 10
     ##    carat cut       color clarity depth table price width length heigth
     ##    <dbl> <ord>     <ord> <ord>   <dbl> <dbl> <int> <dbl>  <dbl>  <dbl>
-    ##  1  0.32 Ideal     F     SI1      61      55   648  4.45   4.47   2.72
-    ##  2  1.5  Fair      I     SI2      64.8    58  6717  7.05   7.15   4.6 
-    ##  3  0.63 Premium   E     SI2      58.9    59  1169  5.64   5.6    3.31
-    ##  4  1.2  Premium   H     SI1      62.9    56  6129  6.8    6.74   4.26
-    ##  5  1.08 Very Good E     SI2      60.2    58  4656  6.61   6.68   4   
-    ##  6  0.51 Good      G     VS2      63.5    57  1343  5.05   5.06   3.21
-    ##  7  0.7  Very Good J     SI2      63.6    56  1609  5.57   5.63   3.56
-    ##  8  1    Ideal     H     SI1      61.4    55  4469  6.49   6.44   3.97
-    ##  9  1.3  Premium   F     VS2      60.4    59 10090  7.12   7.06   4.28
-    ## 10  0.33 Ideal     G     VVS1     62.4    56   820  4.41   4.45   2.76
+    ##  1  1.14 Ideal     G     VS2      61.9    56  7199  6.69   6.71   4.14
+    ##  2  0.72 Premium   E     IF       61.3    60  3951  5.74   5.71   3.51
+    ##  3  1.51 Very Good G     VS2      63.3    60 12872  7.28   7.2    4.58
+    ##  4  2.02 Premium   I     SI2      61.1    61 13991  8.11   8.08   4.95
+    ##  5  1.01 Premium   G     SI2      61      58  4327  6.48   6.43   3.94
+    ##  6  1.06 Very Good F     VS2      62.2    57  6823  6.53   6.58   4.08
+    ##  7  0.36 Ideal     E     VS2      61.7    57   684  4.55   4.59   2.82
+    ##  8  0.71 Ideal     G     SI1      61.6    55  3007  5.72   5.78   3.54
+    ##  9  1.53 Ideal     I     VS2      61.7    57  9189  7.36   7.41   4.56
+    ## 10  1.23 Ideal     G     VS1      62      57  9863  6.83   6.87   4.25
     ## # ... with 90 more rows
 
 ``` r
@@ -402,16 +402,16 @@ diamonds %>%
     ## # A tibble: 16,182 x 10
     ##    carat cut       color clarity depth table price width length heigth
     ##    <dbl> <ord>     <ord> <ord>   <dbl> <dbl> <int> <dbl>  <dbl>  <dbl>
-    ##  1  0.65 Premium   D     VS1      59.4    62  2387  5.72   5.66   3.38
-    ##  2  0.61 Ideal     F     VS1      62.3    55  2366  5.46   5.49   3.41
-    ##  3  0.8  Ideal     I     VS1      62.2    58  2906  5.92   5.95   3.69
-    ##  4  0.32 Ideal     D     VVS2     62.2    56   790  4.37   4.41   2.73
-    ##  5  1.2  Very Good H     SI1      61.2    57  6019  6.78   6.91   4.19
-    ##  6  1.12 Premium   H     SI2      62.1    56  4014  6.7    6.65   4.14
-    ##  7  0.34 Very Good E     SI1      63.3    57   714  4.47   4.44   2.82
-    ##  8  0.56 Ideal     I     VVS1     61.1    55  1622  5.33   5.35   3.26
-    ##  9  0.61 Ideal     G     VS1      62.6    55  2309  5.46   5.43   3.41
-    ## 10  0.3  Ideal     G     IF       62.1    55   895  4.31   4.35   2.69
+    ##  1  0.39 Very Good D     VVS2     63      57  1232  4.65   4.69   2.94
+    ##  2  1.7  Good      G     SI1      58.2    64 11180  7.89   7.85   4.58
+    ##  3  0.39 Very Good D     VS2      59.5    57  1040  4.79   4.82   2.86
+    ##  4  1.56 Premium   F     SI1      60.5    59  9120  7.54   7.49   4.55
+    ##  5  0.61 Ideal     F     VS1      61.9    57  2246  5.42   5.46   3.37
+    ##  6  0.71 Premium   H     SI1      62.1    58  2096  5.72   5.75   3.56
+    ##  7  1.31 Premium   I     VS2      60      58  6921  7.15   7.11   4.28
+    ##  8  0.49 Premium   G     SI1      62.4    58  1072  5.05   4.99   3.13
+    ##  9  0.7  Ideal     I     SI1      61.6    56  2623  5.69   5.71   3.51
+    ## 10  0.31 Ideal     H     VVS1     61.6    55   907  4.38   4.35   2.69
     ## # ... with 16,172 more rows
 
 \#————————– Advanced working——————–\#

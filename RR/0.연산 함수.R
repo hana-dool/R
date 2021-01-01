@@ -1,3 +1,5 @@
+data("mtcars")
+
 #------------처리함수------------#
 abs(-10) # 절대값
 sqrt(9) # 제곱근
@@ -8,9 +10,11 @@ log(100,base=10) # 밑이 10 인 log
 log(2.718) # 자연로그
 exp(2) # exponential
 factorial(3)
+diff(c(1,3,4,5),lag=1) # 차분
+length(c(1,4,3,5)) #관측값 갯수
 
 #------------기술통계 함수------------#
-x<-c(1:5) 
+x<-c(1,5,2,8,4) 
 mean(x)   #평균
 median(x) #중앙값값
 var(x)    #분산
@@ -21,6 +25,7 @@ range(x)  #범위
 length(x) #갯수 
 cumsum(x) #벡터누적합
 cumprod(x)#벡터누적곱
+rank(x)   #순서
 
 #------------통계 분포 함수 -----------# 
 #beta        : beta  (shape1 shape2) 
@@ -90,7 +95,7 @@ B <- matrix(c(1,1,1,
               0,0,0),byrow=TRUE,nrow=3)
 t(A) #transpose
 diag(c(1,2,3,4)) #대각행렬
-diag(4) #항등행렬렬
+diag(4) #항등행렬
 solve(A) #역행렬
 det(A) #det
 A*B # elementwise 연산
@@ -119,7 +124,6 @@ seq(        to=10, by=0.5,length.out = 10) # 시작점이 없어도, 조건에 적절히 맞추
 # repeat
 rep(1:3, each=3) # 111222333 처럼 each 숫자가 3번 반복
 rep(1:3, times=2) # 123 123 으로 전체가 2번 반복
-
 
 sort(x,decreasing = TRUE) #정렬
 

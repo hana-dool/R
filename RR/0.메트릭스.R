@@ -7,7 +7,7 @@ cbind(array1,array2,array3) # col 기준으로 구성
 
 #1dim vector 데이터로 매트릭스스 구성하기
 x = c(1:9)
-mat1<-matrix(x,nrow=3) # 그냥 matrix 로 하게되면 col 기준으로 채워진다.
+mat1<-matrix(x,nrow=3) # 그냥matrix 로 하게되면 col 기준으로 채워진다.
 mat1
 mat2<-matrix(x,nrow=3,byrow=TRUE) # byrow=TRUE 로 하게되면 row 으로 채운다.
 mat2
@@ -16,12 +16,11 @@ mat2
 colnames(mat1) <- c('A','B','C')
 mat1
 
-#row 이름 바꾸기기 
+#row 이름 바꾸기
 rownames(mat1) <- c('가','나','다')
 mat1
 
-#col 이름 바꾸기
-class(mat1)
+# 행렬 연산
 
 # apply 조작
 mat1
