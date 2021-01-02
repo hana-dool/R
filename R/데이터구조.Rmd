@@ -165,4 +165,6 @@ as.integer(3.2)
 as.numeric('go') # 바꿀수 없는 경우 에러가 뜬다.
 as.character(100)
 as.numeric(FALSE) # FALSE 인 경우 0 
+
+# unlist(list) # 리스트를 다른형태로 바꾼다.
 ```
