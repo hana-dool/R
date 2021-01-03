@@ -1,0 +1,50 @@
+---
+title: "apply 계열 함수"
+output: github_document
+---
+```{r setup, warning=FALSE}
+library(MASS)
+str(Cars93)
+attach(Cars93)
+```
+
+# apply 
+apply 는 row 와 col 기준에서 기술통계(max, mean, sum) 등을 집계할 수 있다.
+```{r}
+mat <- matrix(c(1:9),byrow=TRUE,nrow=3)
+mat
+apply(mat,1,max) # col 관점(1)에서 최대값을 뽑아라 # 즉 row의 max
+apply(mat,2,max) # row 관점(2)에서 최대값을 봅아라 # 즉 col의 max
+apply(mat,1,mean)
+apply(mat,2,sum) # col sum 
+```
+
+# tapply
+tapply(벡터,요인,함수) : '벡터' 값들을 '요인'(factor)의 '수준'(level) 별로 '함수'를 동시에 적용 <br>
+즉 factor 로 나누어 져 있는 df 에 대해 효과적으로 각 범주별로 연산이 가능하다. <br>
+Type apply 라고 생각하면 이해가 쉬울것이다. <br>
+```{r}
+head(Cars93)
+str(Cars93) 
+# 차량 유형별(Type) 은 compeact/large/Midsize/small/sporty/van 의 수준(level)으로 고성되어있다.
+# 각각의 type 에 대해서 연비가 얼마나 될지 궁금할 것이다.
+tapply(MPG.highway, Type, mean) #MPG 는 연비
+# 차량 Type 별 고속도로 연비 평균
+# tapply 사용하여 각 type 별 통계적 특징을 알아낼 수 있다.
+```
+
+
+# sapply
+데이터 프레임 여러 변수에 함수 명령어 동시 적용 (결과가 vector/행렬) <br>
+sapply 는 벡터 또는 행렬을 출력한다.
+```{r}
+sapply(Cars93,class) # 27개 변수 한번에 각각의 속성을 알아본다.
+sapply(Cars93,length) # 모든 변수에 대해 각각의 크기를 알아본다.
+```
+
+# laaply
+lapply() : 데이터 프레임 여러 변수에 함수변수 동시적용 (결과가 list)
+```{r}
+lapply(Cars93,class)
+```
+
