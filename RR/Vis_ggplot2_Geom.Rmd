@@ -1,0 +1,172 @@
+---
+title: "ggplot2 Geom"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+# Tip
+아래 그래프는 R-studio 에서 제공하는 cheat sheet 의 내용이다. <br>
+geom 은 그래프의 전체적 모양새를 가늠짓는 함수로 제일 중요하다 할 수 있다. <br>
+```{r}
+library('ggplot2')
+args(geom_col) #이를 통해서 (또는?) 그 함수의 default 설정을 알 수 있다.
+```
+
+# 1연속형
+```{r}
+a <- ggplot(mpg, aes(hwy))
+```
+
+## Area plot
+```{r}
+a + geom_area(stat = "bin")
+```
+
+## density plot
+```{r}
+a + geom_density(kernel = "gaussian")
+```
+
+## 쌓인 점 plot
+```{r}
+a + geom_dotplot()
+```
+
+## 빈도수 plot
+```{r}
+a + geom_freqpoly()
+```
+
+## 히스토그램
+```{r}
+a + geom_histogram(binwidth = 5)
+```
+
+# 1범주형
+## g
+```{r}
+b <- ggplot(mpg, aes(fl))
+b + geom_bar()
+```
+
+
+# 2연속+연속
+## jitter scatter
+```{r}
+e <- ggplot(mpg, aes(cty, hwy))
+e + geom_jitter()
+```
+
+## scatter
+```{r}
+e + geom_point()
+```
+
+## quantile plot
+95% 범위를 세개의 선으로 표시
+```{r}
+e + geom_quantile()
+```
+
+## 축에 rug표시
+```{r}
+e + geom_rug(sides = "bl")
+```
+
+## smooth line
+```{r}
+e + geom_smooth(method = lm)
+```
+
+## text plot
+```{r}
+e + geom_text(aes(label = cty))
+```
+
+## 2d histogram
+```{r}
+head(diamonds)
+h <- ggplot(diamonds, aes(carat, price))
+h + geom_bin2d(binwidth = c(0.25, 500))
+```
+
+## 2d density 
+```{r}
+h + geom_density2d()
+```
+
+## 2d hexagon
+```{r}
+h + geom_hex()
+```
+
+## Area plot
+```{R}
+i <- ggplot(economics, aes(date, unemploy))
+i + geom_area()
+```
+
+## Line plot
+```{R}
+i + geom_line()
+```
+
+## Step plot
+```{r}
+i + geom_step(direction = "hv")
+```
+
+# 2범주+연속
+
+## 막대 그래프
+아래와 같이 그래프의 default 는 sum 을 출력하고 있는 모습이다. <br>
+```{r}
+f <- ggplot(mpg, aes(class, hwy))
+f + geom_col()
+tapply(mpg$hwy,mpg$class,sum)
+```
+
+## box plot
+```{r}
+f + geom_boxplot()
+```
+
+## scatter
+```{r}
+f + geom_dotplot(binaxis = "y", stackdir ="center",dotsize=0.3)
+```
+
+## violin
+```{r}
+f + geom_violin(scale = "area")
+```
+
+# 2범주+범주
+## 격자 plot
+```{r}
+g <- ggplot(diamonds, aes(cut, color))
+g + geom_count()
+```
+
+# 3변수
+
+## contour plot
+```{r}
+head(seals)
+seals$z <- with(seals, sqrt(delta_long^2 + delta_lat^2))
+l <- ggplot(seals, aes(long, lat))
+l + geom_contour(aes(z = z))
+```
+
+## raster plot
+z 를 높이로 가지는 tile plot
+```{r}
+l + geom_raster(aes(fill = z), hjust=0.5, vjust=0.5,
+interpolate=FALSE)
+```
+
+## tile plot
+```{r}
+l + geom_tile(aes(fill = z))
+```
+
