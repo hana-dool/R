@@ -1,0 +1,313 @@
+---
+title: "Linear regression"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+```
+# intro
+- 여기서 다룰 방법은 OLS 방법을 이용하는 전통적인 선형회귀 방법을 설명하겠다. <br>
+- 이 ols 방법은 모든 선형추정 방법중 가장 적은 분산을 보인다.
+  - OLS estimators are said to be best linear unbiased estimators(BLUE), that is, to have
+  minimum variance within the class of linear unbiased estimators
+  - 즉 ols estimator 가 assumption(error~iid(normal)) 하 에서 최소 분산을 가지는 최고의    unbiased linear estimation 이라는 것이다.
+- 하지만 이 때 regression 을 제대로 적용하려면 가정사항을 만족해야한다.<br>
+  - 선형성
+  - 오차의 독립성
+  - 오차의 정규성
+  - 오차의 등분산성
+  - 다중공선성 또는 이상치의 여부
+- 위 가정사항을 만족시키지 못한다면, 예측치의 값이 달라질 수 있으며 standard error 의 값이 증가한다. <br>
+
+# 들어가기에 앞서
+- 더 예측력이 좋은 모델이 많음에도 선형회귀가 여전히 살아남은 이유는
+  1. 이해하기가 쉬워서 모델에 맞게 데이터를 바꾸거나 적용하기 쉽다.
+  2. 해석력이 좋다. 계수 및 std 를 비교하면서 유의성 및 의미를 알기 쉽다.
+- 하지만 무턱대고 사용하면 위의 이점을 하나도 얻을 수 없다. 가정사항을 체크하면서, 얼마나 위배하고있는지 (사실 실제 데이터에서 가정사항을 만족하는 경우는 거의 없다.), 그에 따라 우리 계수를 얼마나 신뢰할 수 있을지를 알아내는게 중요할 것이다.
+- EDA, Analysis 의과정을 반복해 보면서 insight 를 얻고 데이터를 선형회귀를 써도 될 정도로 transformation 하는것이 중요하다.  
+
+# EDA
+- 변수들의 분포나 그 성질들이 선형회귀에 적절한지 체크해야한다. <br>
+- 다만 설명력을 최대로 하고싶다면, 억지로 데이터의 분포를 맞추려 하거나, 많은 transformation 은 지양해야 한다. <br>
+
+## 1.scaling
+- 많은 경우 데이터의 scale 이 다르다. 서로 다른 scale 을 가지고있는 경우 회귀분석의 품질이 안좋아지고 해석이 불편해지므로 정규화를 하는 편이다.
+- 하지만 이상치가 존재할 경우 정규화는 이상치의 영향을 많이 받게된다. 
+- 그런 경우 robust scaling 을 사용하거나 이상치를 제거하고 사용하곤 한다.
+
+## 2.transformation
+- 데이터의 분포가 normal 형태가 되도록 바꾸어주는것이 회귀의 품질을 높여준다.
+  - log(1+x), sqrt(x), e^x 등의 변환을 통해서 너무 치우친 경우, 그 정도를 어느정도 풀어주자. 
+- '선형' 이기 때문에 EDA 에서의 결과를 모델이 잘 반영하도록 변수를 변환해준다.
+  - 예시로 온도가 극단적(춥거나 더울떄) 에 치킨이 잘 팔린다고 해 보자. 그 경우에 정규화를 진행한 후, 절댓값을 취해준다면 '극단적' 인 온도일때에 큰 값을 가지게 된다. 그러므로 회귀분석시 더 좋은 결과를 얻을 수 있다.
+
+## 3.multicorrelation
+- 다중공선성이 있는 경우, OLS 는 불안정해진다. (역행렬을 구해서 계수를 추정하게 되는데, 다중공선성이 심하면 역행렬이 매우 불안정해진다.)
+- 그래서 corrplot 을 통해서 다중공선이 심한 변수끼리는 합치거나, 한쪽을 없애는 과정이 필요하다.
+
+## 4.outlier 
+- oulier 가 존재하는경우 선형회귀의 추정은 매우 변동이 심하다.
+  - 기본적으로 Least square 을 최소화 하려고 하기 때문에, 적합된 회귀선과 먼 데이터가 있게되면 추정이 크게 변동한다.
+- 개인적으로는 선형회귀를 진행할때에는 '다수의 데이터에 대한 일반적인 해석'을 하고 싶기 떄문에 '보통이 아닌' outlier 를 어느정도 제거하는게 좋다고 생각한다.
+
+## 5.NA Imputation
+- NA 및 표기 오류 등을 검사한다. 이 때에 어떤 이유로 NA 가 발생했고 어떤식으로 채울지 결정해야 한다. 
+- 이 챕터에서 중요한 내용은 아니기떄문에 생략. 
+
+# Data Analysis
+- state.x77 : 미국 주들의 인구, 수입, 문맹률, 수명, 살인율 등에 대한 데이터로 Linear regression 을 진행해 보겠다. 
+
+## 데이터 적합
+- 원래는 train 과 test를 나눈뒤에 train 에서 변환 및 모델을 test 해 보고, 
+- test set 에 검정해봐서 mse(상황에 맞는 기준) 을 비교한다. 
+- 하지만 아래 예제에서는 모델끼리 비교하는 상황이나 예측력을 보려는게 아니라 데이터에 대한 모델의 해석을 보려는것이기 떄문에 그냥 진행하자.
+- train 에 대해서 적용한 모델에 대해 test 에 제일 좋은 변환이 아래의 경우라고 미리 생각하자는 것. 
+```{R}
+# 데이터 살펴보기
+head(state.x77)
+
+# data.frame 으로 고침
+df <- state.x77
+df<-data.frame(df)
+str(df)
+
+# 데이터 분포확인 
+# 분포를 보았을 때, 인구와 면적의 분포가 왼쪽으로 치우쳐 보인다.
+library("PerformanceAnalytics")
+chart.Correlation(df, histogram=TRUE)
+
+# 데이터 transformation
+# 인구,면적은 0에 가까운값이 없으므로 그냥 log(x) 로 transformation
+df$Population = log(df$Population)
+df$Area = log(df$Area)
+chart.Correlation(df, histogram=TRUE)
+
+# 데이터 scaling 
+# scale 함수는 정규화를 진행
+# 이 때에 output 이 df 가 아니므로 as.df 를 써야 한다.
+df = as.data.frame(scale(df))
+
+# 회귀 적합
+fit=lm(Murder~.,data=df) 
+summary(fit)
+```
+
+# Assumption check
+
+## Linearlity
+
+- 빨간 선(residual 들의 추세) 가 0에서 직선 형태면 모델이 linear 하다고 볼 수 있다.
+- 왜냐하면 선형으로 예측하고 남은 residual 들이 예측 hyperplane 부근에서 위 아래로 비슷하게 위치한다는것은(즉 0 값 위 아래에 띠모양으로 분포), 어쩃든 예측 못하는 에러로 인해 분산은 컷지만, 그 추세는 어느정도 선형으로 따라간다는 이야기 이기 떄문이다.  
+- 즉 에러는 크지만 X,y 간에 linear 관계가 있다고 볼 수 있다.
+```{r}
+# 이정도면... 괜찮은거같은데?
+plot(fit,1)
+```
+
+변수별로 잔차와 함께 보기<br>
+- 잔차의 추이는 보라색 선이다.
+- 보라색 선이 fit(파란색) 위에 형성되어 있으므로 이는 어느정도 linearlity 를 보인다는 것이다.
+```{r}
+library('car')
+crPlots(fit)
+```
+
+## Normality
+```{r}
+plot(fit, 2) 
+# 양 끝 지점에서 들리는 모습이지만 원래 양 끝이 들리는 현상은 대부분의 데이터에 있는 현상
+# 이정도면 거의 완벽하다고 볼 수 있다.
+```
+
+95% CI 를 같이 표시해주는 QQPLOT
+```{r}
+library(car)
+qqPlot(fit,main="Q-Q plot")
+```
+
+distribution 비교
+
+- kernel density curve 란, 데이터에서 분포를 근사해 주는 방법이다.
+  - 각 데이터에 합이 1이 되게 weighted 동일한 kernel 함수를 누적해서 더한것으로 pdf 를 근사하는 방식 (자세한건 https://darkpgmr.tistory.com/147)
+```{r}
+# distribution of studentized residuals
+residplot <- function(fit, nbreaks=10) {
+    z <- rstudent(fit)
+    hist(z, breaks=nbreaks, freq=FALSE,xlab="Studentized Residual",
+         main="Distribution of Errors")
+    rug(jitter(z), col="brown")
+    curve(dnorm(x, mean=mean(z), sd=sd(z)),add=TRUE, col="blue", lwd=2)
+    lines(density(z)$x, density(z)$y,col="red", lwd=2, lty=2)
+    legend("topright",legend = c( "Normal Curve", "Kernel Density Curve"),
+           lty=1:2, col=c("blue","red"), cex=.7)
+}
+residplot(fit)
+```
+
+## 오차의 독립성 
+- Normal 가정에 따라 오차는 독립적이여야 한다.
+- 시계열을 회귀로 적합하려 할 때에, 시간별로 잔차를 확인하여야 한다.
+- predictor variable 과 residual 사이의 독립성도 살펴보아야 한다.
+```{r}
+# 띠 모양으로 없어보인다.
+# 이는 당연한게, row 의 index 순으로 나열된 잔차인데 시계열이 아닌 이상 row 의 순서는 아무 의미가 없기떄문에 웬만하면 띠 모양이 나오기 떄문
+plot(fit$residuals)
+```
+
+- 각 변수와 residual 을 비교해볼 수 있다. 
+- 비교해 볼 때에, 크게 패턴은 없어보인다.
+```{r}
+# 패키지로 보기
+crPlots(fit)
+
+# ggplot 으로 그려보기
+df_plot = cbind(df,res=fit$residuals)
+library(ggplot2)
+library(reshape2)
+mtmelt <- melt(df_plot, id = "res")
+ggplot(mtmelt, aes(x = value, y = res)) +
+    facet_wrap(~variable, scales = "free") +
+    geom_point()
+```
+
+만약 시계열이였다면 아래와 같이 
+
+- lag 1차이의 잔차끼리 비교
+- autocorrelation 의 값을 비교
+```{r}
+
+# lag 1 차이로 본 잔차. 
+plot(fit$residuals[c(1:length(fit$residuals))-1],fit$residuals[2:length(fit$residuals)])
+
+acf(fit$residuals) # 자기상관여부
+```
+
+## 등분산 가정 
+```{r}
+plot(fit, 1)
+#이정도면 띠 느낌 난다.
+```
+
+
+## 영향점 (outlier)
+cooks distnace 에서 4(n-k-1) 보다 크면 대략적으로 영향치라고 한다.(n= sample 크기,k 는 예측변수의 수)
+```{r}
+cutoff <- 4/(nrow(df)-length(fit$coefficients)-1)
+plot(fit, which=4, cook.levels=cutoff)
+abline(h=cutoff, lty=2, col="red")
+```
+
+## 다중공선성
+- vif 값이 5 이상이면 다중공선성이 어느정도 있다고 생각해도 된다. <br>
+- correlation 의 값이 매우 큰 경우에도 주의해야 한다. 
+
+vif 값 체크
+```{r}
+library('car')
+c<-vif(fit)
+library(ggplot2)
+barplot(c,horiz = T,xlim=c(0,6),las=1)
+abline(v=5,col='red')
+```
+
+correlation 비교
+```{r}
+chart.Correlation(df, histogram=TRUE)
+```
+
+
+# Interpret
+- 계수해석
+  - 기본적으로 회귀 계수의 값이 크면, 그 값은 큰 영향을 끼칠것이다. 하지만 corr 도 고려해야하기 떄문에 단독적으로 해석할 순 없다. <br>
+  - 모든 predictor 가 uncorrelated 이면, 계수의 독자적인 해석이 가능하다. <br>
+  - 하지만 위의 상황은 거의 불가능하다. <br>
+  - 일반적으로 계수 : b_k is the contribution to explain Y  after both X_k and Y have been adjusted for the remaining predictors
+    - 즉 y와 x_k 를 나머지 변수들로 적합시키고 난 뒤의 잔차들에 대한 contribution 의 의미이다.
+    - 즉 계수를 고유한 설명력의 크기라고 보면 된다.
+    - 즉 계수는 그 변수의 '총 설명력' 의 크기를 의미하는게 아니라 다른 변수들이 설명하지 못하는 Y 값을 얼마나 설명할 수 있는지의 척도가 된다. 
+
+- 다중공선성
+  - 기본적으로 Correlation 때문에 설명력이 겹치는 경우가 있다.
+  - 이런 경우 한쪽이 모든 설명력을 가져가 버려서 나머지 한쪽의 계수가 작아지거나 무의미하게 될 수 있다. 
+  - 그리고 해석시 꼭 corr 이 큰 값 끼리는 묶어서 같이 해석해 주어야 한다. 
+    
+## Visualization
+```{r}
+library(dotwhisker)
+library(coefplot)
+summary(fit) 
+# 95% interval
+coefplot(fit,intercept=FALSE)
+# 95% interval
+```
+
+## importance
+다음의 함수는  Robert I. Kabacoff의 R in action(2nd edition)책에 소개되어 있는 함수로 회귀모형에서 상대적인 중요성을 보여준다. <br>
+subm
+```{r}
+relweights <- function(fit,...){
+    R <- cor(fit$model)
+    nvar <- ncol(R)
+    rxx <- R[2:nvar, 2:nvar]
+    rxy <- R[2:nvar, 1]
+    svd <- eigen(rxx)
+    evec <- svd$vectors
+    ev <- svd$values
+    delta <- diag(sqrt(ev))
+    lambda <- evec %*% delta %*% t(evec)
+    lambdasq <- lambda ^ 2
+    beta <- solve(lambda) %*% rxy
+    rsquare <- colSums(beta ^ 2)
+    rawwgt <- lambdasq %*% beta ^ 2
+    import <- (rawwgt / rsquare) * 100
+    import <- as.data.frame(import)
+    row.names(import) <- names(fit$model[2:nvar])
+    names(import) <- "Weights"
+    import <- import[order(import),1, drop=FALSE]
+    dotchart(import$Weights, labels=row.names(import),
+                 xlab="% of R-Square", pch=19,
+                 main="Relative Importance of Predictor Variables",
+                 sub=paste("Total R-Square=", round(rsquare, digits=3)),
+                 ...)
+    return(import)
+}  
+relweights(fit)
+```
+
+## error
+회귀를 썼을 떄에 다음과 같은 에러가 쌓일 수 있다.
+
+- 데이터의 측정시의 오차
+  - measurement error 가 있다면 모형에 영향을 미친다.
+  - ex) 강수량의 경우 0.1 단위로 측정하게 되어서 0.01 단위는 버려진다. -> 오차
+- 가정사항에서의 오차
+  - 회귀의 가정사항을 지키지 못한다면, std.error 값이 상승하고 그에 따라서 유의했던 변수가 유의하지 않게 되거나, estimate 값이 변할 수 있다.
+- NA imputation 에서의 오차  
+  - NA 를 채우는 방식이 적절해야 회귀 계수의 추정도 정확할 것이다.
+  - ex) 무작정 평균으로 채우는것은 data structure 를 부수는 일이다. 충분한 eda 와 방법론 탐색으로 최대한 원 데이터의 structure 를 보전하는 방식으로 채워야한다.
+
+위와 같은 상황이 발생했다고 회귀를 쓰지 말라는것이 아니다. (사실 대부분의 데이터는 위와 같은 상황이 발생한다.) 이런 사항들을 '인지' 하고 최대한 조심스런 해석이 필요한 것이다. 
+
+
+# 변수 selection 
+변수선택에는 아래와 같은 방법을 쓸 수 있다. <br>
+
+- lasso
+- stepwise
+
+하지만 중요한것! 회귀는 결코 '예측력만을 위해서가 아니라 해석력을 위해서' 쓰는것이다. 즉 무작정 varselection 을 해야되는건 아니다. <br>
+만약 변수가 별로 없다면 굳이 selection 을 할 필요가 없다. 어느정도 있으면 R-Square 은 무조건 올라가기 때문
+
+# remedy
+만약 위에서 보았던 error 가 발생했을 때에 어떻게 대처해야 할까? <br>
+
+1. transformation
+  - log, exp 등의 변환으로 설명력이 안좋은 변수를 더 좋게 만들 수 있다.
+2. 다른모델 선택
+  - 굳이 이 모델을 고집할 필요는 없다. 다른 해석가능한 모델도 많기 떄문에 이를 활용하는것이 중요하다.
+3. 데이터 추가
+  - 결정적인 데이터가 없어 해석력이 안좋아 보이는 경우도 많다. 예를 들어 치킨집 매출 분석에서 휴일이라는 중요한 변수가 없다면, 날씨, 인구, 주변영업가게 수 등의 변수도 같이 무의미해 진다. (데이터의 경향을 잘 파악하지 못하기 때문에) 그런데 휴일이라는 critical 한 데이터를 넣는 순간, 다른 변수들이 자신이 설명해야 하는 데이터를 비로소 오롯이 설명하게 되고, 그에 따라 모델이 좋아지고 
+4. 이상치 제거
+  - 이상치란 기존의 데이터로 설명이 불가능한 점이다. 이 점을 제거할 경우에도 모델이 전체적으로 좋아져서 해석력이 좋아진다. (다만 이상치를 너무 많이 제거해서 데이터를 모델에 맞추는 행동은 하지말자. 모델이 데이터에 맞춰져야 하는 것이다.)
