@@ -377,8 +377,81 @@ chart.Correlation(df, histogram=TRUE)
       - 기본적으로 Correlation 때문에 설명력이 겹치는 경우가 있다.
       - 이런 경우 한쪽이 모든 설명력을 가져가 버려서 나머지 한쪽의 계수가 작아지거나 무의미하게 될 수 있다.
       - 그리고 해석시 꼭 corr 이 큰 값 끼리는 묶어서 같이 해석해 주어야 한다.
+  - 스케일링으로 인한 해석
+      - 정규화 시에 그 데이터의 표준편차만큼 나누어 주기 때문에 이도 고려 해야 한다.
 
-## Visualization
+<!-- end list -->
+
+``` r
+summary(fit)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = Murder ~ ., data = df)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -0.7991 -0.3086 -0.0301  0.2728  0.8647 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) -2.830e-15  6.478e-02   0.000   1.0000    
+    ## Population   1.640e-01  8.781e-02   1.867   0.0688 .  
+    ## Income       9.130e-02  9.260e-02   0.986   0.3298    
+    ## Illiteracy   3.012e-01  1.252e-01   2.406   0.0206 *  
+    ## Life.Exp    -5.961e-01  9.074e-02  -6.570 6.01e-08 ***
+    ## HS.Grad      6.775e-02  1.312e-01   0.516   0.6083    
+    ## Frost       -1.464e-01  1.046e-01  -1.399   0.1690    
+    ## Area         1.994e-01  7.424e-02   2.686   0.0103 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.4581 on 42 degrees of freedom
+    ## Multiple R-squared:  0.8201, Adjusted R-squared:  0.7902 
+    ## F-statistic: 27.36 on 7 and 42 DF,  p-value: 1.045e-13
+
+``` r
+attributes(scale(state.x77))
+```
+
+    ## $dim
+    ## [1] 50  8
+    ## 
+    ## $dimnames
+    ## $dimnames[[1]]
+    ##  [1] "Alabama"        "Alaska"         "Arizona"        "Arkansas"      
+    ##  [5] "California"     "Colorado"       "Connecticut"    "Delaware"      
+    ##  [9] "Florida"        "Georgia"        "Hawaii"         "Idaho"         
+    ## [13] "Illinois"       "Indiana"        "Iowa"           "Kansas"        
+    ## [17] "Kentucky"       "Louisiana"      "Maine"          "Maryland"      
+    ## [21] "Massachusetts"  "Michigan"       "Minnesota"      "Mississippi"   
+    ## [25] "Missouri"       "Montana"        "Nebraska"       "Nevada"        
+    ## [29] "New Hampshire"  "New Jersey"     "New Mexico"     "New York"      
+    ## [33] "North Carolina" "North Dakota"   "Ohio"           "Oklahoma"      
+    ## [37] "Oregon"         "Pennsylvania"   "Rhode Island"   "South Carolina"
+    ## [41] "South Dakota"   "Tennessee"      "Texas"          "Utah"          
+    ## [45] "Vermont"        "Virginia"       "Washington"     "West Virginia" 
+    ## [49] "Wisconsin"      "Wyoming"       
+    ## 
+    ## $dimnames[[2]]
+    ## [1] "Population" "Income"     "Illiteracy" "Life Exp"   "Murder"    
+    ## [6] "HS Grad"    "Frost"      "Area"      
+    ## 
+    ## 
+    ## $`scaled:center`
+    ## Population     Income Illiteracy   Life Exp     Murder    HS Grad      Frost 
+    ##  4246.4200  4435.8000     1.1700    70.8786     7.3780    53.1080   104.4600 
+    ##       Area 
+    ## 70735.8800 
+    ## 
+    ## $`scaled:scale`
+    ##   Population       Income   Illiteracy     Life Exp       Murder      HS Grad 
+    ## 4.464491e+03 6.144699e+02 6.095331e-01 1.342394e+00 3.691540e+00 8.076998e+00 
+    ##        Frost         Area 
+    ## 5.198085e+01 8.532730e+04
+
+다른것이 일정할 때에 \#\# Visualization
 
 ``` r
 library(dotwhisker)
@@ -416,7 +489,7 @@ summary(fit)
 coefplot(fit,intercept=FALSE)
 ```
 
-![](Anal_Linear-regression_OLS_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](Anal_Linear-regression_OLS_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ``` r
 # 95% interval
@@ -425,7 +498,7 @@ coefplot(fit,intercept=FALSE)
 ## importance
 
 다음의 함수는 Robert I. Kabacoff의 R in action(2nd edition)책에 소개되어 있는 함수로
-회귀모형에서 상대적인 중요성을 보여준다. <br> subm
+회귀모형에서 상대적인 중요성을 보여준다. <br>
 
 ``` r
 relweights <- function(fit,...){
@@ -457,7 +530,7 @@ relweights <- function(fit,...){
 relweights(fit)
 ```
 
-![](Anal_Linear-regression_OLS_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](Anal_Linear-regression_OLS_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
     ##              Weights
     ## Income      1.754101
@@ -467,6 +540,13 @@ relweights(fit)
     ## Frost      12.320395
     ## Illiteracy 21.051725
     ## Life.Exp   41.635094
+
+  - A new method called relative weights shows significant promise. The
+    method closely approximates the average increase in R-square
+    obtained by adding a predictor variable across all possible
+    submodels (R in action 209p)
+  - 즉 모든 submodel 에 대해 어떤 변수를 넣었을때 평균적으로, r^2 이 많이 상승하면 그 변수를 유의하다고 판단
+  - 이를 이용해서, 변수의 relative 중요성을 판단할 수 있다.
 
 ## error
 
@@ -492,45 +572,274 @@ relweights(fit)
 
   - lasso
   - stepwise
+  - 하지만 중요한것\! 회귀는 결코 ‘예측력만을 위해서가 아니라 해석력을 위해서’ 쓰는것이다. 즉 무작정
+    varselection 을 해야되는건 아니다. <br> 만약 변수가 별로 없다면 굳이 selection 을 할 필요가
+    없다. 어느정도 있으면 R-Square 은 무조건 올라가기 때문
 
-하지만 중요한것\! 회귀는 결코 ‘예측력만을 위해서가 아니라 해석력을 위해서’ 쓰는것이다. 즉 무작정 varselection 을
-해야되는건 아니다. <br> 만약 변수가 별로 없다면 굳이 selection 을 할 필요가 없다. 어느정도 있으면
-R-Square 은 무조건 올라가기 때문
+## stepwise selection
+
+**1. forward stepwise**
+
+가장 널리 사용되는 방법이다. <br> 선택의 기준은 F 값(SSR/SSE) 의 변동과 유의성(t) 으로 선택하게 된다.
+
+1.  처음에 cutoff 값 a(유의수준) 을 정한다.
+      - 위 유의수준에 따라 유의하지 않으므로 버리게 된다.
+2.  우선 SSR(X\_k)/SSE(X\_k) 가 가장 큰 하나의 변수를 선택하고 회귀를 시작한다.
+3.  그 이후 추가할 X\_l 은 SSR(X\_l | S) / SSE(X\_l,S)를 최대로 하는 X\_l 을 넣는다.
+      - S 는 이전 step 에 있었던 모든 predictor 의 집합
+4.  X\_l 을 추가한 이후에 S 내에서 버릴 설명변수가 있는지 검사하고, 유의하지 않으면 버리게 된다.
+      - 여기서 버리는 기준이 처음에 정한 cutoff 값 a 이다.
+      - 이 때에 이미 검사를 통과한(유의수준 a 를 통과한) 변수들이 S 에 있었을 텐데 왜 또 검사를 모두 하는지 궁금해
+        할 수 있다. 이는 추가한 변수가 기존 변수의 설명력을 가져가면서 기존변수가 유의미했다가 무의미해 질 수 있기
+        때문이다.
+5.  위 3\~4 과정을 계속 반복하고, S가 변함없을때까지 진행한다.
+
+<!-- end list -->
+
+``` r
+full.model=lm(Murder~.,data=df)
+reduced.model=step(full.model,direction="forward")
+```
+
+    ## Start:  AIC=-70.79
+    ## Murder ~ Population + Income + Illiteracy + Life.Exp + HS.Grad + 
+    ##     Frost + Area
+
+``` r
+summary(reduced.model)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = Murder ~ Population + Income + Illiteracy + Life.Exp + 
+    ##     HS.Grad + Frost + Area, data = df)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -0.7991 -0.3086 -0.0301  0.2728  0.8647 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) -2.830e-15  6.478e-02   0.000   1.0000    
+    ## Population   1.640e-01  8.781e-02   1.867   0.0688 .  
+    ## Income       9.130e-02  9.260e-02   0.986   0.3298    
+    ## Illiteracy   3.012e-01  1.252e-01   2.406   0.0206 *  
+    ## Life.Exp    -5.961e-01  9.074e-02  -6.570 6.01e-08 ***
+    ## HS.Grad      6.775e-02  1.312e-01   0.516   0.6083    
+    ## Frost       -1.464e-01  1.046e-01  -1.399   0.1690    
+    ## Area         1.994e-01  7.424e-02   2.686   0.0103 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.4581 on 42 degrees of freedom
+    ## Multiple R-squared:  0.8201, Adjusted R-squared:  0.7902 
+    ## F-statistic: 27.36 on 7 and 42 DF,  p-value: 1.045e-13
+
+**2. Backward elemination**
+
+기본적으로 foward 와 방법이 유사하다. <br>
+
+1.  처음 시작시에 모든 설명변수를 넣은 상태에서 시작하며, smallest SSR(X\_l | S) / SSE(X\_l,S)
+    를 가지는 변수를 선택한다.
+2.  이 변수가 처음에 정한 a(유의수준) 에 따라 유의하지 않으면 제외시킨다.
+3.  위 과정을 변동이 없을때까지 계속 반복
+
+<!-- end list -->
+
+``` r
+full.model=lm(Murder~.,data=df)
+reduced.model=step(full.model,direction="backward")
+```
+
+    ## Start:  AIC=-70.79
+    ## Murder ~ Population + Income + Illiteracy + Life.Exp + HS.Grad + 
+    ##     Frost + Area
+    ## 
+    ##              Df Sum of Sq     RSS     AIC
+    ## - HS.Grad     1    0.0559  8.8688 -72.474
+    ## - Income      1    0.2040  9.0168 -71.646
+    ## <none>                     8.8129 -70.791
+    ## - Frost       1    0.4109  9.2238 -70.512
+    ## - Population  1    0.7316  9.5445 -68.803
+    ## - Illiteracy  1    1.2151 10.0279 -66.333
+    ## - Area        1    1.5140 10.3269 -64.864
+    ## - Life.Exp    1    9.0572 17.8700 -37.445
+    ## 
+    ## Step:  AIC=-72.47
+    ## Murder ~ Population + Income + Illiteracy + Life.Exp + Frost + 
+    ##     Area
+    ## 
+    ##              Df Sum of Sq     RSS     AIC
+    ## <none>                     8.8688 -72.474
+    ## - Frost       1    0.5326  9.4014 -71.558
+    ## - Income      1    0.5515  9.4203 -71.458
+    ## - Population  1    0.7310  9.5998 -70.514
+    ## - Illiteracy  1    1.2165 10.0853 -68.047
+    ## - Area        1    2.2446 11.1134 -63.194
+    ## - Life.Exp    1    9.8552 18.7240 -37.111
+
+``` r
+summary(reduced.model)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = Murder ~ Population + Income + Illiteracy + Life.Exp + 
+    ##     Frost + Area, data = df)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -0.7655 -0.3246 -0.0255  0.2797  0.8903 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) -2.712e-15  6.423e-02   0.000  1.00000    
+    ## Population   1.407e-01  7.475e-02   1.883  0.06653 .  
+    ## Income       1.200e-01  7.340e-02   1.635  0.10931    
+    ## Illiteracy   2.746e-01  1.131e-01   2.429  0.01941 *  
+    ## Life.Exp    -5.791e-01  8.377e-02  -6.912 1.72e-08 ***
+    ## Frost       -1.607e-01  1.000e-01  -1.607  0.11538    
+    ## Area         2.167e-01  6.569e-02   3.299  0.00196 ** 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.4541 on 43 degrees of freedom
+    ## Multiple R-squared:  0.819,  Adjusted R-squared:  0.7937 
+    ## F-statistic: 32.43 on 6 and 43 DF,  p-value: 1.982e-14
+
+**3. Stepwise**
+
+forward 와 backward 를 번갈아가면서 진행
+
+``` r
+full.model=lm(Murder~.,data=df)
+reduced.model=step(full.model,direction="both")
+```
+
+    ## Start:  AIC=-70.79
+    ## Murder ~ Population + Income + Illiteracy + Life.Exp + HS.Grad + 
+    ##     Frost + Area
+    ## 
+    ##              Df Sum of Sq     RSS     AIC
+    ## - HS.Grad     1    0.0559  8.8688 -72.474
+    ## - Income      1    0.2040  9.0168 -71.646
+    ## <none>                     8.8129 -70.791
+    ## - Frost       1    0.4109  9.2238 -70.512
+    ## - Population  1    0.7316  9.5445 -68.803
+    ## - Illiteracy  1    1.2151 10.0279 -66.333
+    ## - Area        1    1.5140 10.3269 -64.864
+    ## - Life.Exp    1    9.0572 17.8700 -37.445
+    ## 
+    ## Step:  AIC=-72.47
+    ## Murder ~ Population + Income + Illiteracy + Life.Exp + Frost + 
+    ##     Area
+    ## 
+    ##              Df Sum of Sq     RSS     AIC
+    ## <none>                     8.8688 -72.474
+    ## - Frost       1    0.5326  9.4014 -71.558
+    ## - Income      1    0.5515  9.4203 -71.458
+    ## + HS.Grad     1    0.0559  8.8129 -70.791
+    ## - Population  1    0.7310  9.5998 -70.514
+    ## - Illiteracy  1    1.2165 10.0853 -68.047
+    ## - Area        1    2.2446 11.1134 -63.194
+    ## - Life.Exp    1    9.8552 18.7240 -37.111
+
+``` r
+summary(reduced.model)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = Murder ~ Population + Income + Illiteracy + Life.Exp + 
+    ##     Frost + Area, data = df)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -0.7655 -0.3246 -0.0255  0.2797  0.8903 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) -2.712e-15  6.423e-02   0.000  1.00000    
+    ## Population   1.407e-01  7.475e-02   1.883  0.06653 .  
+    ## Income       1.200e-01  7.340e-02   1.635  0.10931    
+    ## Illiteracy   2.746e-01  1.131e-01   2.429  0.01941 *  
+    ## Life.Exp    -5.791e-01  8.377e-02  -6.912 1.72e-08 ***
+    ## Frost       -1.607e-01  1.000e-01  -1.607  0.11538    
+    ## Area         2.167e-01  6.569e-02   3.299  0.00196 ** 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.4541 on 43 degrees of freedom
+    ## Multiple R-squared:  0.819,  Adjusted R-squared:  0.7937 
+    ## F-statistic: 32.43 on 6 and 43 DF,  p-value: 1.982e-14
+
+## all subset regression
+
+  - stepwise regression 은 every 조합을 검사하지 않기떄문에 (greedy 하게 선택할 뿐임) 그 방법이
+    최적이라고 생각하기 힘들다.
+  - all subset 방법에서는 가능한 모든 모형을 조사한다.
+  - nbest : 조사하고픈 모델 의 수 (3으로 주면 predictor 의 수에 대해서 3개씩 모델을 보여줌)
+  - plot 에서 scale=c(“bic”, “Cp”, “adjr2”, “r2”), 로 변수선택의 기준 정하기 가능
+
+<!-- end list -->
+
+``` r
+require(leaps)
+leaps <-regsubsets(Murder ~.,data=df,nbest = 3)
+plot(leaps, scale="bic") # bic 으로 기준
+```
+
+![](Anal_Linear-regression_OLS_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 # remedy
 
 만약 위에서 보았던 error 가 발생했을 때에 어떻게 대처해야 할까? <br>
 
 1.  transformation
-
-<!-- end list -->
-
-  - log, exp 등의 변환으로 설명력이 안좋은 변수를 더 좋게 만들 수 있다.
-
-<!-- end list -->
-
+      - log, exp 등의 변환으로 설명력이 안좋은 변수를 더 좋게 만들 수 있다.
 2.  다른모델 선택
-
-<!-- end list -->
-
-  - 굳이 이 모델을 고집할 필요는 없다. 다른 해석가능한 모델도 많기 떄문에 이를 활용하는것이 중요하다.
-
-<!-- end list -->
-
+      - 굳이 이 모델을 고집할 필요는 없다. 다른 해석가능한 모델도 많기 떄문에 이를 활용하는것이 중요하다.
 3.  데이터 추가
-
-<!-- end list -->
-
-  - 결정적인 데이터가 없어 해석력이 안좋아 보이는 경우도 많다. 예를 들어 치킨집 매출 분석에서 휴일이라는 중요한 변수가
-    없다면, 날씨, 인구, 주변영업가게 수 등의 변수도 같이 무의미해 진다. (데이터의 경향을 잘 파악하지 못하기
-    때문에) 그런데 휴일이라는 critical 한 데이터를 넣는 순간, 다른 변수들이 자신이 설명해야 하는 데이터를 비로소
-    오롯이 설명하게 되고, 그에 따라 모델이 좋아지고
-
-<!-- end list -->
-
+      - 결정적인 데이터가 없어 해석력이 안좋아 보이는 경우도 많다. 예를 들어 치킨집 매출 분석에서 휴일이라는 중요한
+        변수가 없다면, 날씨, 인구, 주변영업가게 수 등의 변수도 같이 무의미해 진다. (데이터의 경향을 잘
+        파악하지 못하기 때문에) 그런데 휴일이라는 critical 한 데이터를 넣는 순간, 다른 변수들이 자신이
+        설명해야 하는 데이터를 비로소 오롯이 설명하게 되고, 그에 따라 모델이 좋아지고
 4.  이상치 제거
+      - 이상치란 기존의 데이터로 설명이 불가능한 점이다. 이 점을 제거할 경우에도 모델이 전체적으로 좋아져서 해석력이
+        좋아진다. (다만 이상치를 너무 많이 제거해서 데이터를 모델에 맞추는 행동은 하지말자. 모델이 데이터에
+        맞춰져야 하는 것이다.)
 
-<!-- end list -->
+# Evaluation
 
-  - 이상치란 기존의 데이터로 설명이 불가능한 점이다. 이 점을 제거할 경우에도 모델이 전체적으로 좋아져서 해석력이 좋아진다.
-    (다만 이상치를 너무 많이 제거해서 데이터를 모델에 맞추는 행동은 하지말자. 모델이 데이터에 맞춰져야 하는 것이다.)
+정확한 평가를 위해서는 crossvalidation 을 진행하여 test set 에 대한 평가를 진행해야한다. <br> 아래
+함수는 Robert I. Kabacoff의 R in Action(2011) 에 공개되어있는 함수이다. <br> k 만큼
+cross validation 을 진행한 R square 와 원래 fitting 과의 차이를 비교해주는 함수 <br>
+
+``` r
+shrinkage <- function(fit, k=5){ 
+  require(bootstrap)
+                                  
+  theta.fit <- function(x,y){lsfit(x,y)} 
+  theta.predict <- function(fit,x){cbind(1,x)%*%fit$coef}
+  
+  x <- fit$model[,2:ncol(fit$model)] 
+  y <- fit$model[,1]
+                                  
+  results <- crossval(x, y, theta.fit, theta.predict, ngroup=k) 
+  r2 <- cor(y, fit$fitted.values)^2 
+  r2cv <- cor(y, results$cv.fit)^2 
+  cat("Original R-square =", r2, "\n")
+  cat(k, "Fold Cross-Validated R-square =", r2cv, "\n") 
+  cat("Change =", r2-r2cv, "\n")
+}
+fit1=lm(Murder~.,data=df)
+shrinkage(fit1)
+```
+
+    ## Original R-square = 0.8201458 
+    ## 5 Fold Cross-Validated R-square = 0.7411779 
+    ## Change = 0.07896791
+
+# 참고
+
+Robert I. Kabacoff의 R in Action(2011)

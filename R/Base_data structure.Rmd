@@ -4,6 +4,7 @@ output: github_document
 editor_options: 
   chunk_output_type: console
 ---
+
 # 데이터 구조
 R  에는 많은 데이터 구조가 있다. <br>
 각각에 맞는 데이터 유형을 알아두어야 나중에 사용할 수 있을것이다.
@@ -24,6 +25,7 @@ c(1,'tom',3) # 이렇게 수행되면 string(문자) 의 동일한 자료형을 
 x <- c('a','b','c')
 names(x) <- c('first','second','third') # 이와 같이 벡터에 이름을 부여할 수 있다.
 x['first'] # 그에 따라 이름을 가진 vector 가 만들어진다.
+names(x) # vector 의 label 은 names 를 통해서 추출할 수 있다.
 ```
 
 ## list
@@ -167,4 +169,30 @@ as.character(100)
 as.numeric(FALSE) # FALSE 인 경우 0 
 
 # unlist(list) # 리스트를 다른형태로 바꾼다.
+```
+
+# Attribute
+r 에서 Attribute 는 속성을 의미한다. <br>
+R 에서는 데이터에 들어있는 일종의 주석이라고 받아드리면 된다. 
+mtcars 데이터를 scaling 해보자.
+```{r}
+car_scaled <- scale(mtcars) 
+car_scaled
+```
+attr 가 있는것을 볼 수 있다. 이 attr 를 꺼내고 싶다면
+```{r}
+attributes(car_scaled)$`scaled:center`
+```
+각각의 표준화 때에 사용했던 scale 들을 받을 수 있게 되었다.
+
+아래와 같은 방식으로도 가능
+```{r}
+attr(car_scaled,"scaled:center") 
+```
+
+아래와 같은 방식으로 attr 를 할당할 수 도 있다.
+```{r}
+x <- c(1:10)
+attr(x,'data') <- '20210105'
+x
 ```
