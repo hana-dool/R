@@ -1,0 +1,19 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r}
+Sys.setenv(LANG = "en") 
+data = mtcars
+set.seed(12345)
+#getting training data set sizes of .20 (in this case 20 out of 100)
+train_size <- floor(0.80*nrow(data))
+
+in_rows <- sample(c(1:nrow(data)), size = train_size, replace = FALSE)
+train <- data[in_rows, ]
+test <- data[-in_rows, ]
+```
+
+s```
+

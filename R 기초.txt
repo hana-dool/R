@@ -12,3 +12,8 @@ output: github_document
 ## 위와 같이 output 에 github_document 를 넣는다.
 ## 이 때에 encoding을 UTF-8 을 사용하자. 
 ## (UTF 가 rmd 의 Default 이며, 이렇게 사용해야 좋아한다고? 한다 ..ㅎ
+
+[언어 변경]
+Sys.setenv(LANG = "en") 로 바꾸면 영어로 해준다.
+다만 다시 Rstudio 를 키게되면 영어에서 다시 바뀐다.
+영구적인 방법이 있으나 그 방법은 아직 하지 않았다. (encoding 을 바꾸는거같기도 하고.. 찝찝했음)

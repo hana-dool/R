@@ -132,6 +132,16 @@ diamonds <- diamonds %>%
 
 colnames(diamonds)
 ```
+
+# 선택(select_if)
+아래 경우는 numeric 의 경우만 선택한다.
+```{r}
+mydata <- mtcars %>%
+  select_if(is.numeric)
+mydata
+```
+
+
 # sampling 함수
 ```{r}
 # 전체 관측치 중에서 100개만 비복원 추출
