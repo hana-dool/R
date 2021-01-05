@@ -1,0 +1,41 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+# Reshape 패키지
+데이터를 녹이고, 다시 구성하는데에 매우 좋다.
+
+```{r}
+library(reshape)
+df <- airquality
+head(df)
+names(df) = tolower(names(df))
+```
+
+## melt
+데이터를 month, day 만 남기고(id) 나머지는 모두 녹인다는 의미<br>
+이 때 나머지에 대해서는 녹인 id 를 기준으로 덧붙여진다.
+```{r}
+df
+# melt 시에 na.rm 을 TRUE 로 하면, NA 를 모두 제거한다.
+df_melt = melt(df,id = c('month','day'),na.rm=TRUE)
+df_melt
+```
+## cast
+녹인 melt 에 cast 를 적용해서 pivot table 을 구성하자. <br>
+```{r}
+# 아무 function 을 지정하지 않아 그 변수에 해당하는 값이 나온다.
+cast(df_melt,day~month~variable)
+```
+
+- margins = grand_row, grand_col 을 넣어서 소계를 만들 수 있다.
+- subset = variable == '' 를 설정하여 특정 변수만을 처리할 수 있다.
+```{r}
+cast(df_melt,month~variable, fun=mean)
+cast(df_melt,month~variable, fun = mean, margins = c('grand_row','grand_col')) 
+cast(df_melt,day~month,mean,subset=variable =='ozone')
+cast(df_melt, month~variable, min)
+
+```
+

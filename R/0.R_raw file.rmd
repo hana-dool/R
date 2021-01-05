@@ -1,0 +1,28 @@
+
+---
+title: "Untitled"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+# 날짜
+Date 객체로 입력된 날짜 데이터를 통해서 시계열 분석 등에 유용하게 사용 가능하다. <br>
+as.Date 라는 함수를 통해서 문자열을 시계열로 바꿀 수 있지만 기본적으로 문자열이 yyyy-mm-dd 라는 가정 하에 Date 로 바꾼다. <br>
+즉 그 외 다른 형식으로 바꾸어주려 한다면 format 옵션을 통해서 날짜의 형식을 지정해야 한다. <br>
+- %Y : 네자리 숫자로 된 년도
+- %y : 두자리 숫자로 된 년도
+- %m ; 두자리 숫자로 월을 출력
+- %d : 두자리 숫자로 된 일
+- %b : 월을 출력
+- %a : 요일을 출력 
+```{r}
+Sys.Date() # 현재 날짜 반환
+str(as.Date('2020-01-03')) # Date 형식을 가지는 객체임을 알 수 있다.
+as.Date('2020-02-03') # yyyy-mm-dd 형식은 기본적으로 잘 변환한다.
+as.Date('2020/01-01') # 이런형식은 default 로 지원하지 않는다. 그에 맞게 변환해야 한다.
+as.Date('2020/01-01',format='%Y/%m-%d') #  format 에서 그와 맞게 변환된 모습
+date <- as.Date('2020-01-01')
+format(date,format='%b')
+format(date,format='%a') # format 과 함께 쓰여서 날짜를 출력하는 모습
+format(date,format='%m') # 두자리로 된 월
+```

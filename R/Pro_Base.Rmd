@@ -1,0 +1,12 @@
+---
+title: "Untitled"
+output: github_document
+---
+### col 모두 소문자로
+- 분석시에 col 의 이름을 영어로 바꾸어 주는것이 중요하다.(모델에 따라서 한글이 오류날때가 많음) <br>
+- 이떄에 영어 col 이름이지만 대문자가 섞여있는 경우도 있다. 이 떄에는 소문자로 모두 바꾸어 주어야 코딩시 불편함을 덜 수 있다.
+```{r}
+df = mtcars
+names(df) = tolower(names(df))
+```
+

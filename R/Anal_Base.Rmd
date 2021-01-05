@@ -4,15 +4,14 @@ output: github_document
 ---
 
 ```{r}
-Sys.setenv(LANG = "en") 
-data = mtcars
+df = mtcars
+# seed 를 고정해야 모델의 재현성이 보장됩니다. (물론 선택사항)
 set.seed(12345)
-#getting training data set sizes of .20 (in this case 20 out of 100)
-train_size <- floor(0.80*nrow(data))
-
-in_rows <- sample(c(1:nrow(data)), size = train_size, replace = FALSE)
-train <- data[in_rows, ]
-test <- data[-in_rows, ]
+# getting training data set sizes of .20 (in this case 20 out of 100)
+train_size <- floor(0.80*nrow(df))
+in_rows <- sample(c(1:nrow(df)), size = train_size, replace = FALSE)
+train <- df[in_rows, ]
+test <- df[-in_rows, ]
 ```
 
 s```

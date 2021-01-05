@@ -286,3 +286,60 @@ legend(4,40, # legend 가 위치할곳
 ```
 
 ![](Vis_plot_elementary_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+# 그림 기초
+
+## 산점도
+
+``` r
+plot(trees$Girth,trees$Height)
+```
+
+![](Vis_plot_elementary_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+## 산점도 행렬
+
+``` r
+# 무작정 plot 을 dataframe 에 때려넣으면 산점도 행렬이 만들어진다.
+plot(iris) 
+```
+
+![](Vis_plot_elementary_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+``` r
+# pairs 를 써도 같은 효과를 가질 수 있다.
+pairs(iris[1:4]) 
+```
+
+![](Vis_plot_elementary_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+``` r
+# 이 떄에 bg(그래프 배경색지정) 을 통해서 각 점들의 색깔을 지정해줄 수 있다.
+plot(iris[1:4],
+     col=c('red','green','black')[unclass(iris$Species)])
+```
+
+![](Vis_plot_elementary_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
+
+``` r
+# 이렇게 vector 옆에 indexing 을 중복해서 하면 반복해서 element 가 나온다는걸 이용하면 된다. 
+c('t','d','g')[c(1,1,2)]
+```
+
+    ## [1] "t" "t" "d"
+
+## 히스토그램
+
+``` r
+hist(iris$Sepal.Length) 
+```
+
+![](Vis_plot_elementary_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+## 상자그림
+
+``` r
+boxplot(iris$Sepal.Length)
+```
+
+![](Vis_plot_elementary_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
