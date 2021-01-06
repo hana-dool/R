@@ -2,7 +2,7 @@
 title: "Untitled"
 output: github_document
 ---
-
+# Data Train/Test split
 ```{r}
 df = mtcars
 # seed 를 고정해야 모델의 재현성이 보장됩니다. (물론 선택사항)

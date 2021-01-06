@@ -1,30 +1,70 @@
 ---
 title: "Untitled"
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
+- 결측치가 존재하게 되면 R 에서는계산도 하지 않게 될 뿐더러 많은 통계패키지를 적용할 수 없다. <br>
+- Missing value는 3가지가 존재하는데 
+  - Missing comlpletely at random(MCAR) : 동전던지기 처럼 완전한 랜덤
+  - Missing at random(MAR) : missing data 가 observed data 에 depend 하지만 non observed 데이터에는 의존하지 않음 
+  - Missing not at random(MNAR) : Non-ignorable missing 으로서 not observed,observed data 에 depend 하는 missing 데이터
+- 이 때에 Missing 이 MAR 이면, 데이터로부터 효율적인 Imputation 이 가능하겠지만 MNAR 의 경우 처리하기가 쉽지 않다.
+- 통계적 방법을 쓰려면 ignorable(MCAR,MAR) 이라 가정하고 하는 경우가 많다. (그러면 식이 단순해짐)
+- 통계적 분포를 가정한 뒤 EM 알고리즘이나, Mice 패키지 등을 사용해서 대체하고는 한다.
+- 또는 CIA 가정을 통해서 일부 variable로 결측치가 있는 부분을 통계적 모델을 이용해서 채운 뒤 채울수도있다.
+- 또는 k means 방법을 쓸 수 있다.
+  - 이 때 variable 이 많게되면 그 성능에 문제가 있게된다. 
+  - 그래서 FA, PCA 등으로 Dimension reduction 이후에 진행하기도 한다.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Built in 함수
+먼저 매우 기초적인 방법들을 살펴보자.
+```{r}
+library('MASS')
+#is.na() # TRUE/FLASE 로 모두 나타내준다
+is.na(Cars93)
+require(moonBook)
+
+#sum(is.na()) : 곁측값이 총 몇개인지 게산
+sum(is.na(Cars93)) # 곁측값이 총 몇개인지 게산
+
+#colSums(is.na()) : colsum 으로 각 데이터의 col 의 곁측치 계산
+colSums(is.na(Cars93))
+
+#na.rm=TRUE : 곁측값을 통계분석시 제외 
+sum(Cars93$Luggage.room) # 곁측값이 있으면 분석이 안된다.
+sum(Cars93$Luggage.room, na.rm=TRUE) # 곁측값 있어도 통계분석 가능
+
+#na.omit() : 곁측값이 들어있는 행을 분석에서 제외
+Cars93_new <-na.omit(Cars93)
+sum(is.na(Cars93_new)) # 곁측값이 없어진것을 볼 수 있다.
+# 아래 작업을 통해서 곁측치 제거 후 row 들의 index 를 초기화 할 수 있
+
+row.names(Cars93_new) <- NULL
+tail(Cars93_new)
+
+#complete.cases() : 특정행과 열에 결측값이 들어있는 행을 데이터셋에서 제거
+new<-Cars93[complete.cases
+          (Cars93[ ,c('Rear.seat.room')]) , ] # Cars93 데이터 프레임의 Rear.seat.room 칼럼 내 결측값이 있는 행 전체 삭제
+dim(Cars93)
+dim(new) # rear seat room 에서 NA 값이였던 2개의 관측치가 없어져서 row 가 2 줄었다. 
+
+#data$col[is.na(data$col)] <- 새로운값 : 새로운값으로 col 의 곁측치 대체
+mean<-mean(Cars93$Luggage.room, na.rm=TRUE) # 곁측값 미포함한 col 의 mean
+Cars93$Luggage.room[is.na(Cars93$Luggage.room)] <- mean #mean 으로 대체
+
+#sapply(data, functio(x){ifelse}(is.na(x), 대체하고픈값, x )) # 모든 col 에 대해 새로운 값으로 col 곁측치 대체 
+sapply(Cars93, function(x) {ifelse(is.na(x), mean(x, na.rm=TRUE), x)}) #sapply라 각 col 의 mean 으로 대체된다.
 ```
 
-## GitHub Documents
+# Amelia 
+Amelia 패키지를 사용해서 NA 를 처리하는법을 알아보자. <br>
+freetrade 는 1980~1993년까지의 무역정책 자유화에 대한 분석 데이터이다. <br>
+변수는 연도,국가,관세율, 정치지수(-10~10 으로 클수록 자유화),총인구,국민총생산, 총국제준비액, IMF가입년도, 재무적공개석, US선호지수 로 구성되어 있다. <br>
+```{r}
+library(Amelia)
+head(freetrade) 
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
 
-## Including Code
-
-You can include R code in the document as follows:
-
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

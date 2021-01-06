@@ -6,7 +6,21 @@ output: github_document
 - 분석시에 col 의 이름을 영어로 바꾸어 주는것이 중요하다.(모델에 따라서 한글이 오류날때가 많음) <br>
 - 이떄에 영어 col 이름이지만 대문자가 섞여있는 경우도 있다. 이 떄에는 소문자로 모두 바꾸어 주어야 코딩시 불편함을 덜 수 있다.
 ```{r}
-df = mtcars
+df = airquality 
+head(df)
 names(df) = tolower(names(df))
+head(df)
+
+```
+
+### 특정한 Type만 선택
+- plot 을 그리거나 corr 을 그리는 등 numeric 한 것만 골라야 할 때가 있다.
+- 또는 string 의 col 만 고르는 등 조치가 필요할 때에 아래와 같이 lapply 를 사용하면 된다.
+```{r}
+# numeric 만 선택
+df = airquality
+nums = unlist(lapply(df, is.numeric))  
+df = df[,nums] 
+head(df)
 ```
 
