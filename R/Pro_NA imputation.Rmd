@@ -311,7 +311,7 @@ fit_full$coefficients
   - MAR 과 MN 가정으로 인해 데이터를 generating 하고, 분석하기가 Mice 보다 훨씬 수월해진다.
   - bootstrap 과, EM algorithm 을 이용해 p(mu,sigma|observed data) 를 알 수 있게 되고, 그러면 mu,sigma 의 분포를 알게 되므로 missing data 를 generating 할 수 있게된다. 
   - 그리고 bootstrap 과 EM 으로 생성된 데이터를 이용해, Mice 와 같이 모겔을 각각 세운 후 , eastimates 들을 합쳐서 추정
-![images](./Images/Amelia algorithm.png)
+![images](./Images/Amelia algorithm.PNG)
 ![images](./Images/Amelia algorithm2.png)
 - Mice 와의 비교 (https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/)
   - MICE imputes data on variable by variable basis whereas MVN uses a joint modeling approach based on multivariate normal distribution.

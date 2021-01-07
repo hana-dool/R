@@ -829,7 +829,7 @@ fit_full$coefficients
         있게 되고, 그러면 mu,sigma 의 분포를 알게 되므로 missing data 를 generating 할 수
         있게된다.
       - 그리고 bootstrap 과 EM 으로 생성된 데이터를 이용해, Mice 와 같이 모겔을 각각 세운 후 ,
-        eastimates 들을 합쳐서 추정 ![images](./Images/Amelia%20algorithm.png)
+        eastimates 들을 합쳐서 추정 ![images](./Images/Amelia%20algorithm.PNG)
         ![images](./Images/Amelia%20algorithm2.png)
   - Mice 와의 비교
     (<https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/>)
