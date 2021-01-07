@@ -50,6 +50,53 @@ NA\_imputation
 ``` r
 load(file = "./Data/acs.rda")
 library('MASS')
+
+#summary : summary 를 해도 NA 의 수를 모두 나타내준다.
+summary(acs)
+```
+
+    ##       age            sex            cardiogenicShock      entry          
+    ##  Min.   :28.00   Length:857         Length:857         Length:857        
+    ##  1st Qu.:55.00   Class :character   Class :character   Class :character  
+    ##  Median :64.00   Mode  :character   Mode  :character   Mode  :character  
+    ##  Mean   :63.31                                                           
+    ##  3rd Qu.:72.00                                                           
+    ##  Max.   :91.00                                                           
+    ##                                                                          
+    ##       Dx                  EF            height          weight      
+    ##  Length:857         Min.   :18.00   Min.   :130.0   Min.   : 30.00  
+    ##  Class :character   1st Qu.:50.45   1st Qu.:158.0   1st Qu.: 58.00  
+    ##  Mode  :character   Median :58.10   Median :165.0   Median : 65.00  
+    ##                     Mean   :55.83   Mean   :163.2   Mean   : 64.84  
+    ##                     3rd Qu.:62.35   3rd Qu.:170.0   3rd Qu.: 72.00  
+    ##                     Max.   :79.00   Max.   :185.0   Max.   :112.00  
+    ##                     NA's   :134     NA's   :93      NA's   :91      
+    ##       BMI          obesity                TC             LDLC      
+    ##  Min.   :15.62   Length:857         Min.   : 25.0   Min.   : 15.0  
+    ##  1st Qu.:22.13   Class :character   1st Qu.:154.0   1st Qu.: 88.0  
+    ##  Median :24.16   Mode  :character   Median :183.0   Median :114.0  
+    ##  Mean   :24.28                      Mean   :185.2   Mean   :116.6  
+    ##  3rd Qu.:26.17                      3rd Qu.:213.0   3rd Qu.:141.0  
+    ##  Max.   :41.42                      Max.   :493.0   Max.   :366.0  
+    ##  NA's   :93                         NA's   :23      NA's   :24     
+    ##       HDLC             TG             DM                HBP           
+    ##  Min.   : 4.00   Min.   : 11.0   Length:857         Length:857        
+    ##  1st Qu.:32.00   1st Qu.: 68.0   Class :character   Class :character  
+    ##  Median :38.00   Median :105.5   Mode  :character   Mode  :character  
+    ##  Mean   :38.24   Mean   :125.2                                        
+    ##  3rd Qu.:45.00   3rd Qu.:154.0                                        
+    ##  Max.   :89.00   Max.   :877.0                                        
+    ##  NA's   :23      NA's   :15                                           
+    ##    smoking         
+    ##  Length:857        
+    ##  Class :character  
+    ##  Mode  :character  
+    ##                    
+    ##                    
+    ##                    
+    ## 
+
+``` r
 #is.na() # TRUE/FLASE 로 모두 나타내준다
 head(is.na(acs))
 ```
@@ -217,17 +264,6 @@ head(df_imputed)
     ## [5,]          39           27.0           13   3640      2    5
     ## [6,]          41           28.0           16   2880      1    6
 
-# Amelia
-
-Amelia 패키지를 사용해서 NA 를 처리하는법을 알아보자. <br> freetrade 는 1980\~1993년까지의 무역정책
-자유화에 대한 분석 데이터이다. <br> 변수는 연도,국가,관세율, 정치지수(-10\~10 으로 클수록
-자유화),총인구,국민총생산, 총국제준비액, IMF가입년도, 재무적공개석, US선호지수 로
-구성되어 있다. <br>
-
-``` r
-library(Amelia)
-```
-
 # NA 시각화
 
 ## NA 의 Variable 별 수
@@ -248,7 +284,7 @@ na.count[na.count>0]
 barplot(na.count[na.count>0])
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ## NA 패턴분석
 
@@ -257,7 +293,7 @@ require(VIM)
 aggr(acs,prop=FALSE,numbers=TRUE,cex.axis=0.8)
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 패턴을 보아 하니 EF 단독으로 NA 가 있는 경우가 많고, 그 다음에 EF,Height,Weight,Bmi 가 공란인
 경우도 많았다. 아마 기초적인 검사를 한꺼번에(키,몸무게) 하지 않은듯 하다. <br>
 
@@ -273,7 +309,7 @@ aggr(acs,prop=FALSE,numbers=TRUE,cex.axis=0.8)
 marginplot(acs[c("BMI","age")],pch=20,col=c("darkgray","red","blue"))
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> -
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> -
 BMI 에 대해서 Missing 이 발생하였을 떄, age 의 분포는 나이가 든 사람이 많아보였다는것이다. <br> - 즉 나이가
 든 사람은 BMI 의 측정을 싫어한다?(정말 조약한 논리지만) 이라고도 볼 수 있다. - 그리고 BMI 왼편에 있는 숫자는,
 BMI 에 대해서 얼마나 많은 NA 가 발생하였는지를 알려준다.
@@ -282,7 +318,7 @@ BMI 에 대해서 얼마나 많은 NA 가 발생하였는지를 알려준다.
 marginplot(acs[c('EF',"BMI")],pch=20,col=c("darkgray","red","blue"))
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-8-1.png)<!-- --> -
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> -
 이 경우는 BMI 와 EF 의 조합이 총 59번 Missing 이 일어났다는 것이다. <br> - EF 가 Missing 인
 경우 BMI 는 높은쪽이 많았다. 즉 비만인 사람이 EF 측정을 싫어한다고 볼 수 있다.
 
@@ -312,7 +348,7 @@ library(corrplot)
 corrplot(cor(x[y]), method = "color", addCoef.col="grey", order = "AOE")
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-9-1.png)<!-- --> -
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-8-1.png)<!-- --> -
 BMI , Height, Weight 는 상관관계가 거의 1이다. - LDLC , TC, HDLC, TG 끼리는 거의 상관관계가
 1이다. - 이는 BMI = Weight / Height^2 공식과 LDLC = TC-HDLC-TG/5 공식 때문에, 이미 데이터
 제공 측에서 어느정도 계산을 해서 채워넣은듯 하다.
@@ -780,3 +816,335 @@ fit_full$coefficients
   - 그러므로, NA 가 발생한 데이터를 지웠다는것은, 나머지 데이터를 완전 Random 하게 지운것과 같다.
   - 즉, NA를 뺸 데이터는 Full data의 성질을 잘 나타내는 subset 이 될 수 있는것이다.
   - 그러므로 NA 를 뺴고 진행한 Regression인 fit\_del 이 오히려 더 좋은것이다.
+
+# Amelia (Multiple Imputation)
+
+  - Amelia 패키지를 사용해서 NA 를 처리하는법을 알아보자. <br>
+  - Assumption
+      - Amelia 는 모든 data 다 Multivariate Normal 을 따른다고 가정한다.
+      - 그리고 NA 는 MAR 이라고 가정한다.(이는 Mice 에서도 같음)
+  - Algorithm
+      - MAR 과 MN 가정으로 인해 데이터를 generating 하고, 분석하기가 Mice 보다 훨씬 수월해진다.
+      - bootstrap 과, EM algorithm 을 이용해 p(mu,sigma|observed data) 를 알 수
+        있게 되고, 그러면 mu,sigma 의 분포를 알게 되므로 missing data 를 generating 할 수
+        있게된다.
+      - 그리고 bootstrap 과 EM 으로 생성된 데이터를 이용해, Mice 와 같이 모겔을 각각 세운 후 ,
+        eastimates 들을 합쳐서 추정 ![images](./Images/Amelia%20algorithm.png)
+        ![images](./Images/Amelia%20algorithm2.png)
+  - Mice 와의 비교
+    (<https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/>)
+      - MICE imputes data on variable by variable basis whereas MVN uses
+        a joint modeling approach based on multivariate normal
+        distribution.
+      - MICE is capable of handling different types of variables whereas
+        the variables in MVN need to be normally distributed or
+        transformed to approximate normality.
+      - Also, MICE can manage imputation of variables defined on a
+        subset of data whereas MVN cannot.
+  - 즉 정리하자면, Amelia 는 MVN 가정때문에, 분포가 Normal 과 비슷할 때에 NA 처리를 잘한다. 그러므로 그에
+    알맞은 Transformation 을 하고 난 이후에 작동이 잘 될 것이다(사실 변환은 패키지가 어느정도 해주긴 한다.
+    ).
+
+## 시계열
+
+  - freetrade 는 1980\~1993년까지의 무역정책 자유화에 대한 분석 데이터이다. <br>
+  - 변수는 연도,국가,관세율, 정치지수(-10\~10 으로 클수록 자유화),총인구,국민총생산, 총국제준비액, IMF가입년도,
+    재무적공개석, US선호지수 로 구성되어 있다. <br>
+
+<!-- end list -->
+
+``` r
+library(Amelia)
+data(freetrade)
+summary(freetrade)
+```
+
+    ##       year        country              tariff           polity      
+    ##  Min.   :1981   Length:171         Min.   :  7.10   Min.   :-8.000  
+    ##  1st Qu.:1985   Class :character   1st Qu.: 16.30   1st Qu.:-2.000  
+    ##  Median :1990   Mode  :character   Median : 25.20   Median : 5.000  
+    ##  Mean   :1990                      Mean   : 31.65   Mean   : 2.905  
+    ##  3rd Qu.:1995                      3rd Qu.: 40.80   3rd Qu.: 8.000  
+    ##  Max.   :1999                      Max.   :100.00   Max.   : 9.000  
+    ##                                    NA's   :58       NA's   :2       
+    ##       pop                gdp.pc           intresmi          signed      
+    ##  Min.   : 14105080   Min.   :  149.5   Min.   :0.9036   Min.   :0.0000  
+    ##  1st Qu.: 19676715   1st Qu.:  420.1   1st Qu.:2.2231   1st Qu.:0.0000  
+    ##  Median : 52799040   Median :  814.3   Median :3.1815   Median :0.0000  
+    ##  Mean   :149904501   Mean   : 1867.3   Mean   :3.3752   Mean   :0.1548  
+    ##  3rd Qu.:120888400   3rd Qu.: 2462.9   3rd Qu.:4.4063   3rd Qu.:0.0000  
+    ##  Max.   :997515200   Max.   :12086.2   Max.   :7.9346   Max.   :1.0000  
+    ##                                        NA's   :13       NA's   :3       
+    ##      fiveop          usheg       
+    ##  Min.   :12.30   Min.   :0.2558  
+    ##  1st Qu.:12.50   1st Qu.:0.2623  
+    ##  Median :12.60   Median :0.2756  
+    ##  Mean   :12.74   Mean   :0.2764  
+    ##  3rd Qu.:13.20   3rd Qu.:0.2887  
+    ##  Max.   :13.20   Max.   :0.3083  
+    ##  NA's   :18
+
+Regression
+
+``` r
+summary(lm(tariff ~ polity + pop + gdp.pc + year + country, data = freetrade))
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = tariff ~ polity + pop + gdp.pc + year + country, 
+    ##     data = freetrade)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -30.7640  -3.2595   0.0868   2.5983  18.3097 
+    ## 
+    ## Coefficients:
+    ##                      Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)         1.973e+03  4.016e+02   4.912 3.61e-06 ***
+    ## polity             -1.373e-01  1.821e-01  -0.754    0.453    
+    ## pop                -2.021e-07  2.542e-08  -7.951 3.23e-12 ***
+    ## gdp.pc              6.096e-04  7.442e-04   0.819    0.415    
+    ## year               -8.705e-01  2.084e-01  -4.176 6.43e-05 ***
+    ## countryIndonesia   -1.823e+02  1.857e+01  -9.819 2.98e-16 ***
+    ## countryKorea       -2.204e+02  2.078e+01 -10.608  < 2e-16 ***
+    ## countryMalaysia    -2.245e+02  2.171e+01 -10.343  < 2e-16 ***
+    ## countryNepal       -2.163e+02  2.247e+01  -9.629 7.74e-16 ***
+    ## countryPakistan    -1.554e+02  1.982e+01  -7.838 5.63e-12 ***
+    ## countryPhilippines -2.040e+02  2.088e+01  -9.774 3.75e-16 ***
+    ## countrySriLanka    -2.091e+02  2.210e+01  -9.460 1.80e-15 ***
+    ## countryThailand    -1.961e+02  2.095e+01  -9.358 2.99e-15 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 6.221 on 98 degrees of freedom
+    ##   (60 observations deleted due to missingness)
+    ## Multiple R-squared:  0.9247, Adjusted R-squared:  0.9155 
+    ## F-statistic: 100.3 on 12 and 98 DF,  p-value: < 2.2e-16
+
+  - 이 떄에 60개의 데이터가 지워진것을 볼 수 있다.
+  - Missing 에도 정보가 있고, 또한 MACR 이 아니라 MAR 이면, 결과가 Biased 될 지도 모르는일이기 때문에
+    이를 꼭 잘 채워주어야 한다.
+  - imputation 을 수행할 때에 제일 첫 step 은 imputation 에 들어갈 변수를 찾는것이다.
+  - imputation 할 때에는 최대한 많은 변수를 넣는것이 좋다.
+  - 그러므로 우리의 Analysis 의 주된 목적이 pop,polity,gdp.pc 에 있다 하더라도 모든 variable 을
+    넣어서 imputation 을 진행하겠다.
+
+<!-- end list -->
+
+``` r
+# m : 몇개의 데이터를 생성할 것인가
+# ts : 시계열에 대한 정보가 되는 열의 이름
+# cs : cross-sectional 분석에 이용되는 정보 
+# Note : 횡단면 데이터(Cross-Sectional Data)란 복수의 개체(기업, 지역, 지구, 피험자 등)를 어느 한 시점에서 본 관측값으로 이루어진 데이터.예를 들면 2016년 47개 행정구역의 주민 소득 데이터 등이 이에 해당.
+a.out <- amelia(freetrade, m = 5, ts = "year", cs = "country")
+```
+
+    ## -- Imputation 1 --
+    ## 
+    ##   1  2  3  4  5  6  7  8  9 10 11 12
+    ## 
+    ## -- Imputation 2 --
+    ## 
+    ##   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
+    ## 
+    ## -- Imputation 3 --
+    ## 
+    ##   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+    ## 
+    ## -- Imputation 4 --
+    ## 
+    ##   1  2  3  4  5  6  7  8  9 10 11 12 13 14
+    ## 
+    ## -- Imputation 5 --
+    ## 
+    ##   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
+
+``` r
+a.out
+```
+
+    ## 
+    ## Amelia output with 5 imputed datasets.
+    ## Return code:  1 
+    ## Message:  Normal EM convergence. 
+    ## 
+    ## Chain Lengths:
+    ## --------------
+    ## Imputation 1:  12
+    ## Imputation 2:  16
+    ## Imputation 3:  19
+    ## Imputation 4:  14
+    ## Imputation 5:  16
+
+  - 위 dataset 은 매우 작은경우임을 명심하자.
+  - 일반적으로 몇백\~몇천의 EM Algorithm 의 steps 를 겪는다고 한다.
+  - 긴 chain length 가 나온다면, 우리 variable 이 Multi noraml 에 잘 맞지 않는다는 의미일 수
+    있고, 이는 variable 을 normal 에 맞게 변환시켜야 할 수도 있을것이다.
+
+<!-- end list -->
+
+``` r
+df_imputed3 = a.out$imputations[[3]]# 3번째 imputed set 
+head(df_imputed3)
+```
+
+    ##   year  country   tariff polity      pop   gdp.pc intresmi signed fiveop
+    ## 1 1981 SriLanka 52.59540      6 14988000 461.0236 1.937347      0   12.4
+    ## 2 1982 SriLanka 31.17011      5 15189000 473.7634 1.964430      0   12.5
+    ## 3 1983 SriLanka 41.30000      5 15417000 489.2266 1.663936      1   12.3
+    ## 4 1984 SriLanka 45.68146      5 15599000 508.1739 2.797462      0   12.3
+    ## 5 1985 SriLanka 31.00000      5 15837000 525.5609 2.259116      0   12.3
+    ## 6 1986 SriLanka 62.90108      5 16117000 538.9237 1.832549      0   12.5
+    ##       usheg
+    ## 1 0.2593112
+    ## 2 0.2558008
+    ## 3 0.2655022
+    ## 4 0.2988009
+    ## 5 0.2952431
+    ## 6 0.2886563
+
+  - 3번째 imputed data set 을 출력해 보았다.
+
+<!-- end list -->
+
+``` r
+hist(a.out$imputations[[3]]$tariff, col="grey", border="white")
+```
+
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-23-1.png)<!-- --> -
+3번째로 imputed 된 데이터에 대해 tariff 의 분포를 살펴보았다. - 데이터를 이용하고 싶다면, full imputed
+된 데이터 a.out$imputations\[\[i\]\] 를 이용하면 될 것이다. - 자세한 Settings 는 (AMELIA
+II: A Program for Missing Data) 의 pdf 21p 를 확인해보자.
+
+## Transformation
+
+  - As it turns out, much evidence in the literature (discussed in King
+    et al. 2001) indicates that the multivariate normal model used in
+    Amelia usually works well for the imputation stage even when
+    discrete or nonnormal variables are included and when the analysis
+    stage involves these limited dependent variable models (AMELIA II: A
+    Program for Missing Data-16p)
+      - 즉 어느정도 Normal 분포가 아니거나, discrete 이여도 잘 작동한다는 의미이다.
+  - Although these transformations are taken internally on these
+    variables to better fit the data to the multivariate normal
+    assumptions of the imputation model, all the imputations that are
+    created will be returned in the original untransformed form of the
+    data.
+      - 즉 어느정도의 Transformation 은 자체 내장 함수가 수행해 준다는 의미이다.
+
+## Ordinal
+
+  - Ordinal 의 경우는 따로 처리가 필요하다.
+
+<!-- end list -->
+
+``` r
+table(a.out$imputations[[3]]$polity)
+```
+
+    ## 
+    ##                  -8                  -7                  -6                  -5 
+    ##                   1                  22                   4                   7 
+    ##                  -4                  -2                  -1 -0.0953189811253616 
+    ##                   3                   9                   1                   1 
+    ##                   2                   3                   4    4.97589335686374 
+    ##                   7                   7                  15                   1 
+    ##                   5                   6                   7                   8 
+    ##                  26                  13                   5                  36 
+    ##                   9 
+    ##                  13
+
+위와 같이 polity 는 -10\~10 의 점수를 가지는 ordinal 임에도 데이터의 imputation 이
+continuous 한 형태로 나타난것을 볼 수 있다. <br> 이 자체로 써도 되긴 하지만 더 정확한 impute 를 위해
+다르게 할 수도 있다 <br>
+
+``` r
+# p2s 는 display 할지 말지, 크게 중요한 변수는 아님 
+a.out1 <- amelia(freetrade, m = 5, ts = "year", cs = "country", ords ="polity", p2s = 0)
+```
+
+## Nominal(Categorical)
+
+  - signed which is 1 if a country signed an IMF agreement in that year
+    and 0 if it did not
+      - 즉 signed 라는 variable 은 1,0 의 categorical variable 이다.
+
+<!-- end list -->
+
+``` r
+table(a.out1$imputations[[3]]$signed)
+```
+
+    ## 
+    ## -0.209595835801611                  0    0.1161643455861   0.79082105584105 
+    ##                  1                142                  1                  1 
+    ##                  1 
+    ##                 26
+
+그런데 conti 값으로 Categorical variable 을 채워넣은것을 볼 수 있다.
+
+``` r
+a.out2 <- amelia(freetrade, m = 5, ts = "year", cs = "country", noms ="signed", p2s = 0)
+table(a.out2$imputations[[3]]$signed)
+```
+
+    ## 
+    ##   0   1 
+    ## 144  27
+
+위처럼 noms 를 지정해 주어야 잘 작동하는것을 볼 수 있다.
+
+## Diagnotic
+
+  - amelia 에서는 diagnotic 이 가능하다. <br>
+
+  - 
+<!-- end list -->
+
+``` r
+# which.var : 어떤 variable 을 볼지 
+# 우리가 채운 tariff, intresmi그려준다.
+plot(a.out, which.vars = c('tariff','intresmi','fiveop'))
+compare.density(a.out, var = "signed") # signed 의 Observed value 와 mean imputation 을 보여준다. 
+```
+
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+
+``` r
+summary(freetrade)
+```
+
+    ##       year        country              tariff           polity      
+    ##  Min.   :1981   Length:171         Min.   :  7.10   Min.   :-8.000  
+    ##  1st Qu.:1985   Class :character   1st Qu.: 16.30   1st Qu.:-2.000  
+    ##  Median :1990   Mode  :character   Median : 25.20   Median : 5.000  
+    ##  Mean   :1990                      Mean   : 31.65   Mean   : 2.905  
+    ##  3rd Qu.:1995                      3rd Qu.: 40.80   3rd Qu.: 8.000  
+    ##  Max.   :1999                      Max.   :100.00   Max.   : 9.000  
+    ##                                    NA's   :58       NA's   :2       
+    ##       pop                gdp.pc           intresmi          signed      
+    ##  Min.   : 14105080   Min.   :  149.5   Min.   :0.9036   Min.   :0.0000  
+    ##  1st Qu.: 19676715   1st Qu.:  420.1   1st Qu.:2.2231   1st Qu.:0.0000  
+    ##  Median : 52799040   Median :  814.3   Median :3.1815   Median :0.0000  
+    ##  Mean   :149904501   Mean   : 1867.3   Mean   :3.3752   Mean   :0.1548  
+    ##  3rd Qu.:120888400   3rd Qu.: 2462.9   3rd Qu.:4.4063   3rd Qu.:0.0000  
+    ##  Max.   :997515200   Max.   :12086.2   Max.   :7.9346   Max.   :1.0000  
+    ##                                        NA's   :13       NA's   :3       
+    ##      fiveop          usheg       
+    ##  Min.   :12.30   Min.   :0.2558  
+    ##  1st Qu.:12.50   1st Qu.:0.2623  
+    ##  Median :12.60   Median :0.2756  
+    ##  Mean   :12.74   Mean   :0.2764  
+    ##  3rd Qu.:13.20   3rd Qu.:0.2887  
+    ##  Max.   :13.20   Max.   :0.3083  
+    ##  NA's   :18
+
+# 참고자료
+
+  - <https://eda-ai-lab.tistory.com/14>
+  - <https://rstudio-pubs-static.s3.amazonaws.com/192402_012091b9adac42dbbd22c4d07cb00d36.html>
+  - <https://robotcat.tistory.com/469>
+  - <https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/>
+  - AMELIA II: A Program for Missing Data()
+  - mice : Multivariate Imputation by Chained Equations in R(2011)
