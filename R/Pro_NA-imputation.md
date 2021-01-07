@@ -829,21 +829,20 @@ fit_full$coefficients
         있게 되고, 그러면 mu,sigma 의 분포를 알게 되므로 missing data 를 generating 할 수
         있게된다.
       - 그리고 bootstrap 과 EM 으로 생성된 데이터를 이용해, Mice 와 같이 모겔을 각각 세운 후 ,
-        eastimates 들을 합쳐서 추정 ![images](./Images/Amelia%20algorithm.PNG)
-        ![images](./Images/Amelia%20algorithm2.png)
-  - Mice 와의 비교
-    (<https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/>)
-      - MICE imputes data on variable by variable basis whereas MVN uses
-        a joint modeling approach based on multivariate normal
-        distribution.
-      - MICE is capable of handling different types of variables whereas
-        the variables in MVN need to be normally distributed or
-        transformed to approximate normality.
-      - Also, MICE can manage imputation of variables defined on a
-        subset of data whereas MVN cannot.
-  - 즉 정리하자면, Amelia 는 MVN 가정때문에, 분포가 Normal 과 비슷할 때에 NA 처리를 잘한다. 그러므로 그에
-    알맞은 Transformation 을 하고 난 이후에 작동이 잘 될 것이다(사실 변환은 패키지가 어느정도 해주긴 한다.
-    ).
+        eastimates 들을 합쳐서 추정
+
+![images](./Images/Amelia%20algorithm.PNG)
+
+![images](./Images/Amelia%20algorithm2.png) - Mice 와의 비교
+(<https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/>)
+- MICE imputes data on variable by variable basis whereas MVN uses a
+joint modeling approach based on multivariate normal distribution. -
+MICE is capable of handling different types of variables whereas the
+variables in MVN need to be normally distributed or transformed to
+approximate normality. - Also, MICE can manage imputation of variables
+defined on a subset of data whereas MVN cannot. - 즉 정리하자면, Amelia 는 MVN
+가정때문에, 분포가 Normal 과 비슷할 때에 NA 처리를 잘한다. 그러므로 그에 알맞은 Transformation 을 하고
+난 이후에 작동이 잘 될 것이다(사실 변환은 패키지가 어느정도 해주긴 한다. ).
 
 ## 시계열
 
