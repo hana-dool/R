@@ -17,6 +17,7 @@ library(corrplot)
 df_cor= cor(mtcars)
 corrplot(df_cor,method = 'square')
 corrplot(df_cor,method = 'number')
+corrplot(df_cor, method = "color", addCoef.col="grey", order = "AOE")
 ```
 
 ## Corranalysis

@@ -837,8 +837,8 @@ shrinkage(fit1)
 ```
 
     ## Original R-square = 0.8201458 
-    ## 5 Fold Cross-Validated R-square = 0.7411779 
-    ## Change = 0.07896791
+    ## 5 Fold Cross-Validated R-square = 0.7392482 
+    ## Change = 0.08089765
 
 # 참고
 

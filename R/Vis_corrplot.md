@@ -30,6 +30,12 @@ corrplot(df_cor,method = 'number')
 
 ![](Vis_corrplot_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
+``` r
+corrplot(df_cor, method = "color", addCoef.col="grey", order = "AOE")
+```
+
+![](Vis_corrplot_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
+
 ## Corranalysis
 
 performance Analytic 이라는 패키지 에서 산점도와 히스토그램을 같이 볼 수 있다.
