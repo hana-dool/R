@@ -353,7 +353,7 @@ BMI , Height, Weight 는 상관관계가 거의 1이다. - LDLC , TC, HDLC, TG �
 1이다. - 이는 BMI = Weight / Height^2 공식과 LDLC = TC-HDLC-TG/5 공식 때문에, 이미 데이터
 제공 측에서 어느정도 계산을 해서 채워넣은듯 하다.
 
-# Analysis
+# NA Analysis 의 종류
 
   - Listwise deletion(Complete-case analysis) : 모든 변수들이 다 채워진 관측치만 이용해서
     분석을 진행
@@ -480,6 +480,56 @@ round(cor(acs[c("EF","BMI","LDLC")],use="pairwise.complete.obs"),3)
     688 개, EF-LDLC의 분석에는 707 개가 사용되었고 BMI-LDLC의 분석에는 750 개가 사용되었다.
   - 이는 분석가능한 모든 데이터를 사용한다는 장점이 있지만 결정적으로 분석의 Sample space 가 각기 다르기 때문에
     분석 결과를 통합해서 해석하기가 어렵다.
+
+# KNN imputation
+
+  - KNN 은 매우 간단한 알고리즘이다. Acol 이 NA가 있는 데이터 에 대해, Acol 이 채워져 있는 데이터 중
+    ‘비슷한’ k 개의 데이터를 찾는다. 그 데이터들에 대해 k 개의 Acol 의 값을 평균내서 NA 로 사용
+  - 비모수적(통계모형이 아닌) 방법론이며 구현이 매우 쉽다.
+  - 하지만 Data structure 를 고려하지 않은 Imputation 이다.
+  - 변수가 많아질 경우, 그 정확도가 매우 떨어진다.
+
+<!-- end list -->
+
+``` r
+library(VIM)
+# 임의로 NA 형성
+df <- acs
+df[,'smoking'][sample(1:nrow(df),50)] <- NA
+# 10 개의 neighborhood 를 사용
+# Categorical data 도 알아서 척척 impute 해준다.
+df_imputed= kNN(df,k = 10)
+head(df_imputed)
+```
+
+    ##   age    sex cardiogenicShock   entry              Dx   EF height weight
+    ## 1  62   Male               No Femoral           STEMI 18.0  168.0   72.0
+    ## 2  78 Female               No Femoral           STEMI 18.4  148.0   48.0
+    ## 3  76 Female              Yes Femoral           STEMI 20.0  157.5   62.5
+    ## 4  89 Female               No Femoral           STEMI 21.8  165.0   50.0
+    ## 5  56   Male               No  Radial          NSTEMI 21.8  162.0   64.0
+    ## 6  73 Female               No  Radial Unstable Angina 22.0  153.0   59.0
+    ##        BMI obesity  TC LDLC HDLC  TG  DM HBP smoking age_imp sex_imp
+    ## 1 25.51020     Yes 215  154   35 155 Yes  No  Smoker   FALSE   FALSE
+    ## 2 21.91381      No 183  107   43 166  No Yes   Never   FALSE   FALSE
+    ## 3 23.94683      No 172  109   44  82  No Yes   Never   FALSE   FALSE
+    ## 4 18.36547      No 121   73   20  89  No  No   Never   FALSE   FALSE
+    ## 5 24.38653      No 195  151   36  63 Yes Yes  Smoker   FALSE   FALSE
+    ## 6 25.20398     Yes 184  112   38 137 Yes Yes   Never   FALSE   FALSE
+    ##   cardiogenicShock_imp entry_imp Dx_imp EF_imp height_imp weight_imp BMI_imp
+    ## 1                FALSE     FALSE  FALSE  FALSE      FALSE      FALSE   FALSE
+    ## 2                FALSE     FALSE  FALSE  FALSE      FALSE      FALSE   FALSE
+    ## 3                FALSE     FALSE  FALSE  FALSE       TRUE       TRUE    TRUE
+    ## 4                FALSE     FALSE  FALSE  FALSE      FALSE      FALSE   FALSE
+    ## 5                FALSE     FALSE  FALSE  FALSE      FALSE      FALSE   FALSE
+    ## 6                FALSE     FALSE  FALSE  FALSE      FALSE      FALSE   FALSE
+    ##   obesity_imp TC_imp LDLC_imp HDLC_imp TG_imp DM_imp HBP_imp smoking_imp
+    ## 1       FALSE  FALSE    FALSE    FALSE  FALSE  FALSE   FALSE       FALSE
+    ## 2       FALSE   TRUE     TRUE     TRUE  FALSE  FALSE   FALSE       FALSE
+    ## 3       FALSE   TRUE     TRUE     TRUE   TRUE  FALSE   FALSE       FALSE
+    ## 4       FALSE  FALSE    FALSE    FALSE  FALSE  FALSE   FALSE       FALSE
+    ## 5       FALSE  FALSE    FALSE    FALSE  FALSE  FALSE   FALSE       FALSE
+    ## 6       FALSE  FALSE    FALSE    FALSE  FALSE  FALSE   FALSE       FALSE
 
 # Multiple imputation(mice)
 
@@ -1011,7 +1061,7 @@ head(df_imputed3)
 hist(a.out$imputations[[3]]$tariff, col="grey", border="white")
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-23-1.png)<!-- --> -
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-24-1.png)<!-- --> -
 3번째로 imputed 된 데이터에 대해 tariff 의 분포를 살펴보았다. - 데이터를 이용하고 싶다면, full imputed
 된 데이터 a.out$imputations\[\[i\]\] 를 이용하면 될 것이다. - 자세한 Settings 는 (AMELIA
 II: A Program for Missing Data) 의 pdf 21p 를 확인해보자.
@@ -1108,7 +1158,7 @@ plot(a.out, which.vars = c('tariff','intresmi','fiveop'))
 compare.density(a.out, var = "signed") # signed 의 Observed value 와 mean imputation 을 보여준다. 
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 ``` r
 summary(freetrade)

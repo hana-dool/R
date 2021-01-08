@@ -138,7 +138,7 @@ corrplot(cor(x[y]), method = "color", addCoef.col="grey", order = "AOE")
 - LDLC , TC, HDLC, TG 끼리는 거의 상관관계가 1이다.
 - 이는 BMI = Weight / Height^2 공식과 LDLC = TC-HDLC-TG/5 공식 때문에, 이미 데이터 제공 측에서 어느정도 계산을 해서 채워넣은듯 하다. 
 
-# Analysis 
+# NA Analysis 의 종류 
 - Listwise deletion(Complete-case analysis) : 모든 변수들이 다 채워진 관측치만 이용해서 분석을 진행
   - 한개라도 누락이 있는 자료는 제거한다. 
   - 많은 통계 프로그램에서 default 로 되어있는 방법이다.
@@ -169,6 +169,22 @@ round(cor(acs[c("EF","BMI","LDLC")],use="pairwise.complete.obs"),3)
 ```
 -  EF는 모두 134 개가 누락되어 있고 BMI는 93, LDLC는 24, 의 누락이 있다 그러므로 EF-BMI의 분석에는 688 개, EF-LDLC의 분석에는 707 개가 사용되었고 BMI-LDLC의 분석에는 750 개가 사용되었다.
 - 이는 분석가능한 모든 데이터를 사용한다는 장점이 있지만 결정적으로 분석의 Sample space 가 각기 다르기 때문에 분석 결과를 통합해서 해석하기가 어렵다. 
+
+# KNN imputation
+- KNN 은 매우 간단한 알고리즘이다. Acol 이 NA가 있는 데이터 에 대해, Acol 이 채워져 있는 데이터 중 '비슷한' k 개의 데이터를 찾는다. 그 데이터들에 대해 k 개의 Acol 의 값을 평균내서 NA 로 사용
+- 비모수적(통계모형이 아닌) 방법론이며 구현이 매우 쉽다.
+- 하지만 Data structure 를 고려하지 않은 Imputation 이다. 
+- 변수가 많아질 경우, 그 정확도가 매우 떨어진다. 
+```{R}
+library(VIM)
+# 임의로 NA 형성
+df <- acs
+df[,'smoking'][sample(1:nrow(df),50)] <- NA
+# 10 개의 neighborhood 를 사용
+# Categorical data 도 알아서 척척 impute 해준다.
+df_imputed= kNN(df,k = 10)
+head(df_imputed)
+```
 
 # Multiple imputation(mice)
 **MICE**

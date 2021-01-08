@@ -24,3 +24,6 @@ https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html
 
 [R Directory 를 현재 위치로]
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+
+[rmd 이미지 넣기]
+![images](./Images/Amelia algorithm.PNG)
