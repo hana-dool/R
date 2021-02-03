@@ -407,6 +407,11 @@ fit1=lm(Murder~.,data=df)
 shrinkage(fit1)
 ```
 
-# 참고
-Robert I. Kabacoff의 R in Action(2011) 
+# Reference
+- Robert I. Kabacoff의 R in Action(2011) 
+- http://www.sthda.com/english/articles/39-regression-model-diagnostics/161-linear-regression-assumptions-and-diagnostics-in-r-essentials/
+- http://r-statistics.co/Assumptions-of-Linear-Regression.html
+- https://rpubs.com/aryn999/LinearRegressionAssumptionsAndDiagnosticsInR
+- https://www.ianruginski.com/post/regressionassumptions/
+- https://rpubs.com/cardiomoon/190997
 

@@ -294,8 +294,9 @@ aggr(acs,prop=FALSE,numbers=TRUE,cex.axis=0.8)
 ```
 
 ![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-패턴을 보아 하니 EF 단독으로 NA 가 있는 경우가 많고, 그 다음에 EF,Height,Weight,Bmi 가 공란인
-경우도 많았다. 아마 기초적인 검사를 한꺼번에(키,몸무게) 하지 않은듯 하다. <br>
+
+패턴을 보아 하니 EF 단독으로 NA 가 있는 경우가 많고, 그 다음에 EF,Height,Weight,Bmi 가 공란인 경우도
+많았다. 아마 기초적인 검사를 한꺼번에(키,몸무게) 하지 않은듯 하다. <br>
 
 ## NA 산점도 분석
 
@@ -309,18 +310,22 @@ aggr(acs,prop=FALSE,numbers=TRUE,cex.axis=0.8)
 marginplot(acs[c("BMI","age")],pch=20,col=c("darkgray","red","blue"))
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> -
-BMI 에 대해서 Missing 이 발생하였을 떄, age 의 분포는 나이가 든 사람이 많아보였다는것이다. <br> - 즉 나이가
-든 사람은 BMI 의 측정을 싫어한다?(정말 조약한 논리지만) 이라고도 볼 수 있다. - 그리고 BMI 왼편에 있는 숫자는,
-BMI 에 대해서 얼마나 많은 NA 가 발생하였는지를 알려준다.
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+  - BMI 에 대해서 Missing 이 발생하였을 떄, age 의 분포는 나이가 든 사람이 많아보였다는것이다. <br>
+  - 즉 나이가 든 사람은 BMI 의 측정을 싫어한다?(정말 조약한 논리지만) 이라고도 볼 수 있다.
+  - 그리고 BMI 왼편에 있는 숫자는, BMI 에 대해서 얼마나 많은 NA 가 발생하였는지를 알려준다.
+
+<!-- end list -->
 
 ``` r
 marginplot(acs[c('EF',"BMI")],pch=20,col=c("darkgray","red","blue"))
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> -
-이 경우는 BMI 와 EF 의 조합이 총 59번 Missing 이 일어났다는 것이다. <br> - EF 가 Missing 인
-경우 BMI 는 높은쪽이 많았다. 즉 비만인 사람이 EF 측정을 싫어한다고 볼 수 있다.
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+  - 이 경우는 BMI 와 EF 의 조합이 총 59번 Missing 이 일어났다는 것이다. <br>
+  - EF 가 Missing 인 경우 BMI 는 높은쪽이 많았다. 즉 비만인 사람이 EF 측정을 싫어한다고 볼 수 있다.
 
 ## 누락된 자료의 상관관계
 
@@ -348,10 +353,12 @@ library(corrplot)
 corrplot(cor(x[y]), method = "color", addCoef.col="grey", order = "AOE")
 ```
 
-![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-8-1.png)<!-- --> -
-BMI , Height, Weight 는 상관관계가 거의 1이다. - LDLC , TC, HDLC, TG 끼리는 거의 상관관계가
-1이다. - 이는 BMI = Weight / Height^2 공식과 LDLC = TC-HDLC-TG/5 공식 때문에, 이미 데이터
-제공 측에서 어느정도 계산을 해서 채워넣은듯 하다.
+![](Pro_NA-imputation_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+  - BMI , Height, Weight 는 상관관계가 거의 1이다.
+  - LDLC , TC, HDLC, TG 끼리는 거의 상관관계가 1이다.
+  - 이는 BMI = Weight / Height^2 공식과 LDLC = TC-HDLC-TG/5 공식 때문에, 이미 데이터 제공
+    측에서 어느정도 계산을 해서 채워넣은듯 하다.
 
 # NA Analysis 의 종류
 
@@ -503,16 +510,16 @@ head(df_imputed)
 ```
 
     ##   age    sex cardiogenicShock   entry              Dx   EF height weight
-    ## 1  62   Male               No Femoral           STEMI 18.0  168.0   72.0
-    ## 2  78 Female               No Femoral           STEMI 18.4  148.0   48.0
-    ## 3  76 Female              Yes Femoral           STEMI 20.0  157.5   62.5
-    ## 4  89 Female               No Femoral           STEMI 21.8  165.0   50.0
-    ## 5  56   Male               No  Radial          NSTEMI 21.8  162.0   64.0
-    ## 6  73 Female               No  Radial Unstable Angina 22.0  153.0   59.0
+    ## 1  62   Male               No Femoral           STEMI 18.0    168   72.0
+    ## 2  78 Female               No Femoral           STEMI 18.4    148   48.0
+    ## 3  76 Female              Yes Femoral           STEMI 20.0    160   62.5
+    ## 4  89 Female               No Femoral           STEMI 21.8    165   50.0
+    ## 5  56   Male               No  Radial          NSTEMI 21.8    162   64.0
+    ## 6  73 Female               No  Radial Unstable Angina 22.0    153   59.0
     ##        BMI obesity  TC LDLC HDLC  TG  DM HBP smoking age_imp sex_imp
     ## 1 25.51020     Yes 215  154   35 155 Yes  No  Smoker   FALSE   FALSE
-    ## 2 21.91381      No 183  107   43 166  No Yes   Never   FALSE   FALSE
-    ## 3 23.94683      No 172  109   44  82  No Yes   Never   FALSE   FALSE
+    ## 2 21.91381      No 174   98   43 166  No Yes   Never   FALSE   FALSE
+    ## 3 23.80897      No 173  109   42  88  No Yes   Never   FALSE   FALSE
     ## 4 18.36547      No 121   73   20  89  No  No   Never   FALSE   FALSE
     ## 5 24.38653      No 195  151   36  63 Yes Yes  Smoker   FALSE   FALSE
     ## 6 25.20398     Yes 184  112   38 137 Yes Yes   Never   FALSE   FALSE
@@ -883,16 +890,21 @@ fit_full$coefficients
 
 ![images](./Images/Amelia%20algorithm.PNG)
 
-![images](./Images/Amelia%20algorithm2.png) - Mice 와의 비교
-(<https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/>)
-- MICE imputes data on variable by variable basis whereas MVN uses a
-joint modeling approach based on multivariate normal distribution. -
-MICE is capable of handling different types of variables whereas the
-variables in MVN need to be normally distributed or transformed to
-approximate normality. - Also, MICE can manage imputation of variables
-defined on a subset of data whereas MVN cannot. - 즉 정리하자면, Amelia 는 MVN
-가정때문에, 분포가 Normal 과 비슷할 때에 NA 처리를 잘한다. 그러므로 그에 알맞은 Transformation 을 하고
-난 이후에 작동이 잘 될 것이다(사실 변환은 패키지가 어느정도 해주긴 한다. ).
+![images](./Images/Amelia%20algorithm2.png)
+
+  - Mice 와의 비교
+    (<https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/>)
+      - MICE imputes data on variable by variable basis whereas MVN uses
+        a joint modeling approach based on multivariate normal
+        distribution.
+      - MICE is capable of handling different types of variables whereas
+        the variables in MVN need to be normally distributed or
+        transformed to approximate normality.
+      - Also, MICE can manage imputation of variables defined on a
+        subset of data whereas MVN cannot.
+  - 즉 정리하자면, Amelia 는 MVN 가정때문에, 분포가 Normal 과 비슷할 때에 NA 처리를 잘한다. 그러므로 그에
+    알맞은 Transformation 을 하고 난 이후에 작동이 잘 될 것이다(사실 변환은 패키지가 어느정도 해주긴 한다.
+    ).
 
 ## 시계열
 
@@ -1148,7 +1160,6 @@ table(a.out2$imputations[[3]]$signed)
 
   - amelia 에서는 diagnotic 이 가능하다. <br>
 
-  - 
 <!-- end list -->
 
 ``` r

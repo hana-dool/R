@@ -837,9 +837,14 @@ shrinkage(fit1)
 ```
 
     ## Original R-square = 0.8201458 
-    ## 5 Fold Cross-Validated R-square = 0.7392482 
-    ## Change = 0.08089765
+    ## 5 Fold Cross-Validated R-square = 0.738547 
+    ## Change = 0.08159882
 
-# 참고
+# Reference
 
-Robert I. Kabacoff의 R in Action(2011)
+  - Robert I. Kabacoff의 R in Action(2011)
+  - <http://www.sthda.com/english/articles/39-regression-model-diagnostics/161-linear-regression-assumptions-and-diagnostics-in-r-essentials/>
+  - <http://r-statistics.co/Assumptions-of-Linear-Regression.html>
+  - <https://rpubs.com/aryn999/LinearRegressionAssumptionsAndDiagnosticsInR>
+  - <https://www.ianruginski.com/post/regressionassumptions/>
+  - <https://rpubs.com/cardiomoon/190997>

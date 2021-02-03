@@ -6,11 +6,11 @@ rmds <- "C:/Users/goran/Desktop/Git_Hub/R/R"
 setwd(base)
 
 # 파일 이름 지정
-filename <- "Vis_ggplot2_Geom.Rmd"
+filename <- "Anal_Logistic-regression.Rmd"
 
-# 폴더 경로들
-figs.path <- "assets/images/"
-posts.path <- "_posts/R/"
+# 폴더 경로들 지정 
+figs.path <- "assets/images/" # 이미지가 들갈 폴더을 지정
+posts.path <- "_posts/R/" # 포스트가 들어갈 폴더 지정
 
 # Rmd -> md 변환
 require(knitr)
@@ -28,3 +28,4 @@ opts_chunk$set(cache = F, warning = F, message = F, cache.path = "_cache/", tidy
 ### 파일 변환 및 경로 지정
 out.file <- basename(knit(file))
 file.rename(out.file, paste0(posts.path, out.file))
+

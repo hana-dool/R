@@ -110,5 +110,3 @@ library(stringr)
 str <- c('  go    ')
 str_trim(str)
 ```
-
-#

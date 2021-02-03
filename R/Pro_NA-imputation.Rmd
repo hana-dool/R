@@ -105,6 +105,7 @@ barplot(na.count[na.count>0])
 require(VIM)
 aggr(acs,prop=FALSE,numbers=TRUE,cex.axis=0.8)
 ```
+
 패턴을 보아 하니 EF 단독으로 NA 가 있는 경우가 많고, 그 다음에 EF,Height,Weight,Bmi 가 공란인 경우도 많았다. 아마 기초적인 검사를 한꺼번에(키,몸무게) 하지 않은듯 하다. <br>
 
 ## NA 산점도 분석
@@ -115,12 +116,14 @@ aggr(acs,prop=FALSE,numbers=TRUE,cex.axis=0.8)
 ```{r}
 marginplot(acs[c("BMI","age")],pch=20,col=c("darkgray","red","blue"))
 ```
+
 - BMI 에 대해서 Missing 이 발생하였을 떄, age 의 분포는 나이가 든 사람이 많아보였다는것이다. <br>
 - 즉 나이가 든 사람은 BMI 의 측정을 싫어한다?(정말 조약한 논리지만) 이라고도 볼 수 있다. 
 - 그리고 BMI 왼편에 있는 숫자는, BMI 에 대해서 얼마나 많은 NA 가 발생하였는지를 알려준다.
 ```{r}
 marginplot(acs[c('EF',"BMI")],pch=20,col=c("darkgray","red","blue"))
 ```
+
 - 이 경우는 BMI 와 EF 의 조합이 총 59번 Missing 이 일어났다는 것이다. <br>
 - EF 가 Missing 인 경우 BMI 는 높은쪽이 많았다. 즉 비만인 사람이 EF 측정을 싫어한다고 볼 수 있다.
 
@@ -134,6 +137,7 @@ round(cor(x[y]),2)
 library(corrplot)
 corrplot(cor(x[y]), method = "color", addCoef.col="grey", order = "AOE")
 ```
+
 - BMI , Height, Weight 는 상관관계가 거의 1이다. 
 - LDLC , TC, HDLC, TG 끼리는 거의 상관관계가 1이다.
 - 이는 BMI = Weight / Height^2 공식과 LDLC = TC-HDLC-TG/5 공식 때문에, 이미 데이터 제공 측에서 어느정도 계산을 해서 채워넣은듯 하다. 
@@ -319,6 +323,7 @@ fit_full$coefficients
 
 
 # Amelia (Multiple Imputation)
+
 - Amelia 패키지를 사용해서 NA 를 처리하는법을 알아보자. <br>
 - Assumption
   - Amelia 는 모든 data 다 Multivariate Normal 을 따른다고 가정한다. 
@@ -332,6 +337,7 @@ fit_full$coefficients
 
 
 ![images](./Images/Amelia algorithm2.png)
+
 - Mice 와의 비교 (https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/)
   - MICE imputes data on variable by variable basis whereas MVN uses a joint modeling approach based on multivariate normal distribution.
   - MICE is capable of handling different types of variables whereas the variables in MVN need to be normally distributed or transformed to approximate normality.
@@ -416,7 +422,6 @@ table(a.out2$imputations[[3]]$signed)
 
 ## Diagnotic
 - amelia 에서는 diagnotic 이 가능하다. <br>
-- 
 ```{r}
 # which.var : 어떤 variable 을 볼지 
 # 우리가 채운 tariff, intresmi그려준다.

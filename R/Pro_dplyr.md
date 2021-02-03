@@ -1,4 +1,4 @@
-Untitled
+dplyr 기초 전처리
 ================
 
 ``` r
@@ -348,6 +348,50 @@ colnames(diamonds)
     ##  [1] "carat"   "cut"     "color"   "clarity" "depth"   "table"   "price"  
     ##  [8] "width"   "length"  "heigth"
 
+# 선택(select\_if)
+
+아래 경우는 numeric 의 경우만 선택한다.
+
+``` r
+mydata <- mtcars %>%
+  select_if(is.numeric)
+mydata
+```
+
+    ##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+    ## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+    ## Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+    ## Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+    ## Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+    ## Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+    ## Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+    ## Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+    ## Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+    ## Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+    ## Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+    ## Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+    ## Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+    ## Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+    ## Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+    ## Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+    ## Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+    ## Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+    ## Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+    ## Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+    ## Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+    ## Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+    ## Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+    ## AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+    ## Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+    ## Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+    ## Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+    ## Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+    ## Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+    ## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+    ## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+    ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+    ## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+
 # sampling 함수
 
 ``` r
@@ -359,16 +403,16 @@ diamonds %>%
     ## # A tibble: 100 x 10
     ##    carat cut       color clarity depth table price width length heigth
     ##    <dbl> <ord>     <ord> <ord>   <dbl> <dbl> <int> <dbl>  <dbl>  <dbl>
-    ##  1  0.7  Good      E     VVS2     60.1    63  2857  5.68   5.71   3.42
-    ##  2  1.2  Very Good E     VS1      59.4    56  9904  6.94   7      4.14
-    ##  3  0.26 Very Good E     VS2      60.4    58   452  4.15   4.19   2.52
-    ##  4  0.41 Ideal     G     SI1      61.6    57  1110  4.77   4.81   2.95
-    ##  5  0.31 Premium   I     VVS1     61      58   732  4.39   4.33   2.66
-    ##  6  0.3  Ideal     G     VS2      60.8    57   491  4.33   4.38   2.65
-    ##  7  1.01 Fair      D     SI2      64.6    62  4538  6.26   6.21   4.03
-    ##  8  0.53 Premium   J     VS2      60.9    59  1122  5.27   5.2    3.19
-    ##  9  2.14 Premium   G     SI2      60.1    58 12792  8.4    8.35   5.03
-    ## 10  1.54 Premium   G     SI2      62.4    57  8969  7.39   7.36   4.6 
+    ##  1  0.7  Premium   I     I1       62.3    58  1107  5.69   5.55   3.51
+    ##  2  0.54 Good      E     SI1      57.2    59  1323  5.37   5.32   3.06
+    ##  3  0.85 Ideal     G     SI1      61.6    55  3023  6.09   6.11   3.76
+    ##  4  0.32 Ideal     G     IF       61.7    54   918  4.39   4.42   2.72
+    ##  5  1.51 Very Good I     SI1      62.2    60  8637  7.23   7.3    4.52
+    ##  6  0.32 Ideal     D     VS2      62.2    56   972  4.4    4.38   2.73
+    ##  7  1.03 Ideal     E     VVS2     61.7    54  9932  6.49   6.52   4.02
+    ##  8  0.52 Premium   F     VS2      60.7    59  1720  5.18   5.14   3.13
+    ##  9  1.26 Ideal     G     VS1      61.6    56  9243  7.03   6.96   4.31
+    ## 10  0.4  Good      D     SI1      63.1    61   720  4.67   4.71   2.96
     ## # ... with 90 more rows
 
 ``` r
@@ -379,18 +423,18 @@ diamonds %>%
 ```
 
     ## # A tibble: 100 x 10
-    ##    carat cut       color clarity depth table price width length heigth
-    ##    <dbl> <ord>     <ord> <ord>   <dbl> <dbl> <int> <dbl>  <dbl>  <dbl>
-    ##  1  1.14 Ideal     G     VS2      61.9    56  7199  6.69   6.71   4.14
-    ##  2  0.72 Premium   E     IF       61.3    60  3951  5.74   5.71   3.51
-    ##  3  1.51 Very Good G     VS2      63.3    60 12872  7.28   7.2    4.58
-    ##  4  2.02 Premium   I     SI2      61.1    61 13991  8.11   8.08   4.95
-    ##  5  1.01 Premium   G     SI2      61      58  4327  6.48   6.43   3.94
-    ##  6  1.06 Very Good F     VS2      62.2    57  6823  6.53   6.58   4.08
-    ##  7  0.36 Ideal     E     VS2      61.7    57   684  4.55   4.59   2.82
-    ##  8  0.71 Ideal     G     SI1      61.6    55  3007  5.72   5.78   3.54
-    ##  9  1.53 Ideal     I     VS2      61.7    57  9189  7.36   7.41   4.56
-    ## 10  1.23 Ideal     G     VS1      62      57  9863  6.83   6.87   4.25
+    ##    carat cut     color clarity depth table price width length heigth
+    ##    <dbl> <ord>   <ord> <ord>   <dbl> <dbl> <int> <dbl>  <dbl>  <dbl>
+    ##  1  1.02 Premium E     VS2      60      59  7311  6.56   6.54   3.93
+    ##  2  0.46 Ideal   G     IF       60.9    57  1560  4.98   5.01   3.04
+    ##  3  0.81 Ideal   D     VS2      59.5    60  4315  6.08   6.15   3.64
+    ##  4  0.31 Ideal   D     VS1      62.1    57   877  4.35   4.32   2.69
+    ##  5  1    Ideal   E     SI1      62.7    57  5622  6.39   6.49   4.04
+    ##  6  0.71 Ideal   F     VS1      61.5    56  3710  5.72   5.76   3.53
+    ##  7  0.5  Ideal   E     SI1      61.6    55  1410  5.09   5.13   3.15
+    ##  8  1.14 Ideal   G     VVS1     61      56  9037  6.75   6.8    4.13
+    ##  9  1.02 Ideal   G     VS2      62.3    56  6796  6.46   6.51   4.04
+    ## 10  0.31 Ideal   E     VS1      61.7    53   800  4.36   4.39   2.7 
     ## # ... with 90 more rows
 
 ``` r
@@ -402,16 +446,16 @@ diamonds %>%
     ## # A tibble: 16,182 x 10
     ##    carat cut       color clarity depth table price width length heigth
     ##    <dbl> <ord>     <ord> <ord>   <dbl> <dbl> <int> <dbl>  <dbl>  <dbl>
-    ##  1  0.39 Very Good D     VVS2     63      57  1232  4.65   4.69   2.94
-    ##  2  1.7  Good      G     SI1      58.2    64 11180  7.89   7.85   4.58
-    ##  3  0.39 Very Good D     VS2      59.5    57  1040  4.79   4.82   2.86
-    ##  4  1.56 Premium   F     SI1      60.5    59  9120  7.54   7.49   4.55
-    ##  5  0.61 Ideal     F     VS1      61.9    57  2246  5.42   5.46   3.37
-    ##  6  0.71 Premium   H     SI1      62.1    58  2096  5.72   5.75   3.56
-    ##  7  1.31 Premium   I     VS2      60      58  6921  7.15   7.11   4.28
-    ##  8  0.49 Premium   G     SI1      62.4    58  1072  5.05   4.99   3.13
-    ##  9  0.7  Ideal     I     SI1      61.6    56  2623  5.69   5.71   3.51
-    ## 10  0.31 Ideal     H     VVS1     61.6    55   907  4.38   4.35   2.69
+    ##  1  0.9  Premium   F     VS1      59      58  4770  6.29   6.33   3.72
+    ##  2  0.9  Good      D     VVS1     62.9    58  8239  6.01   6.1    3.81
+    ##  3  0.34 Ideal     D     SI1      62.3    57   803  4.48   4.44   2.78
+    ##  4  0.31 Premium   G     VVS1     63      58  1046  4.32   4.29   2.71
+    ##  5  0.91 Very Good G     VS2      62.7    63  3776  6.05   6      3.78
+    ##  6  0.38 Very Good D     SI2      61.1    58   633  4.62   4.68   2.84
+    ##  7  0.24 Very Good E     VS2      63      58   419  3.94   3.97   2.49
+    ##  8  1.53 Ideal     I     SI1      62.3    56  9315  7.37   7.4    4.6 
+    ##  9  1.13 Premium   E     SI1      62.7    57  5012  6.65   6.62   4.16
+    ## 10  2.01 Very Good H     VS2      63.5    59 16677  7.92   7.86   5.01
     ## # ... with 16,172 more rows
 
 \#————————– Advanced working——————–\#
