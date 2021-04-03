@@ -1,0 +1,28 @@
+---
+title: "Control flow 조절"
+output:
+  github_document
+editor_options:
+  chunk_output_type: console
+---
+
+# For
+for 문을 통해서 반복문을 제어할 수 있다. 파이썬의 경우 range 를 많이쓰지만 r 의 경우 바로 : 를 쓰거나, seq 를 사용할 수 있다.
+```{r}
+for(i in 1:3){
+  print(1)
+}
+```
+
+# If
+if 문 또한 아래와 같이 사용된다
+이때 주의해야할점은 else 가 파이썬의 경우 새로운 줄로 넘어간 이후에 붙여주지만 R 의 경우는 { 뒤에 붙어야한다는것!
+```{r}
+A = c(1,2,3)
+if (7 %in% A){
+  print('True')
+} else{
+  print('nono')
+}
+```
+
