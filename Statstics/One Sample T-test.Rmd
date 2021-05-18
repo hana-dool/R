@@ -1,0 +1,30 @@
+---
+title: "Untitled"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+```
+# 데이터
+```{r}
+hsb2 <- within(read.csv("https://stats.idre.ucla.edu/stat/data/hsb2.csv"), {
+    race <- as.factor(race)
+    schtyp <- as.factor(schtyp)
+    prog <- as.factor(prog)
+})
+attach(hsb2)
+head(hsb2,n=10)
+```
+# 2-side 테스트
+```{r}
+t.test(write, mu = 50,alternative= 'two.sided')
+```
+- One sample T-test 에 대해서 위와 같이 결과가 나온다.
+- 맨 앞에 하나의 sample 을 쓴다.
+- mu : 검정하고자 하는 $H_0$ 값이다.
+- alternative : 내가 검정하고자 하는 가설이다.
+  - 'two.sided' : $H_1$ : $\mu \not=50$ 의 의미가 된다.
+  - 'less' : $\mu \le 50$
+  - 'greater' : $\mu \ge 50$
